@@ -9,6 +9,8 @@ from collections import namedtuple
 
 logger = logging.getLogger(__name__)
 
+CameraInfo = namedtuple('CameraInfo', ['ip', 'port', 'protocol', 'hardware_version', 'serial', 'name'])
+
 
 def discover(networks):
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -27,8 +29,6 @@ def discover(networks):
             logger.warning('Could not send discovery packet to {}: {}'.format(ipv4['broadcast'], e))
 
     time.sleep(0.2)
-
-    CameraInfo = namedtuple('CameraInfo', ['ip', 'port', 'protocol', 'hardware_version', 'serial', 'name'])
 
     while True:
         try:

@@ -62,7 +62,7 @@ def parse_response(response):
 
     brackets = response.count('{')
 
-    if brackets == 1:
+    if brackets == 1 and not '\t' in response:
         if response.count(':') > 1:
             return parse_simple(response)
         else:
@@ -81,7 +81,7 @@ def parse_response(response):
         raise FrameOutsideRangeError()
 
     elif response.startswith('ERR'):
-        raise CameraError(response)
+        raise CameraError(response.replace('ERR: ', '').capitalize())
 
     else:
         try:
@@ -134,6 +134,10 @@ class Phantom(object):
     def takes(self):
         return Takes(self)
 
+    @cached_property_with_ttl(ttl=1)
+    def ram_takes(self):
+        return RamTakes(self)
+
     @cached_property_with_ttl(ttl=0.03)
     def recstatus(self):
         return 'WTR' in self.ask('get c1.state')
@@ -169,16 +173,20 @@ class Phantom(object):
         return round(float(self.ask('get info.battv')) / 1000, 1)
 
     @cached_property_with_ttl(ttl=0.5)
+    def vcdina(self):
+        return round(float(self.ask('get info.vcdina')), 1)
+
+    @cached_property_with_ttl(ttl=0.5)
+    def vcdinb(self):
+        return round(float(self.ask('get info.vcdinb')), 1)
+
+    @cached_property_with_ttl(ttl=0.5)
     def battstate(self):
         return int(self.ask('get info.battstate'))
 
     @property
     def video_play(self):
-        if int(self.c1['frcount']):
-            return self.ask_raw('get video.play')
-        else:
-            # FIXME
-            pass
+        return self.ask('get video.play')['play']
 
     @property
     def resolution(self):
@@ -213,6 +221,9 @@ class Phantom(object):
                     self.socket_data, address = data_server.accept()
 
                 self.connected = True
+
+                # sync camera clock to this systems clock
+                self.set_rtc()
 
                 self.interface = subprocess.check_output(
                     'route -n get {} | grep interface | cut -d " " -f 4'.format(self.ip),
@@ -281,7 +292,7 @@ class Phantom(object):
             self.ask(commands[self.recstatus])
 
     def get_takeinfo(self, take, keys=None):
-        keys = keys or ['firstfr', 'lastfr', 'in', 'out', 'frcount']
+        keys = keys or ['firstfr', 'lastfr', 'in', 'out', 'frcount', 'state']
         takeinfo = {}
         for key in keys:
             takeinfo[key] = self.ask('get {}.{}'.format(take, key))
@@ -362,7 +373,8 @@ class Phantom(object):
         except CameraError:
             raise
 
-        except:
+        except Exception as e:
+            logger.exception(e)
             self.disconnect()
             raise
 
@@ -373,11 +385,18 @@ class Phantom(object):
 
         return response
 
+    def live(self):
+        self.ask('set video.play.live 1')
+        self.ask('set video.play.step 0')
+
     def play(self, cine=1, source='ram'):
-        if self.video_play['step']:
-            self.ask('vplay {{cine: {}, step: 0, from: {}}}'.format(cine, source))
-        else:
-            self.ask('vplay {{cine: {}, step: 1, speed: 1, from: {}}}'.format(cine, source))
+        try:
+            if self.video_play['step']:
+                self.ask('vplay {{cine: {}, step: 0, from: {}}}'.format(cine, source))
+            else:
+                self.ask('vplay {{cine: {}, step: 1, speed: 1, from: {}}}'.format(cine, source))
+        except CameraError as e:
+            logger.warning(e)
 
     def set_playhead(self, frame):
         if frame != self.video_play['fn'] \
@@ -400,6 +419,11 @@ class Phantom(object):
     def save(self):
         self.ask('fsave {{cine: 1, firstframe: {}, lastframe: {}}}'.format(self.c1['in'], self.c1['out']))
 
+    def set_rtc(self, timestamp=None):
+        if not timestamp:
+            timestamp = time.time()
+        self.ask('setrtc {{ value: {} }}'.format(int(timestamp)))
+
 
 class Takes(object):
     def __init__(self, camera):
@@ -413,6 +437,21 @@ class Takes(object):
             raise IndexError
         return self.camera.get_takeinfo('fc{}'.format(index),
                                         ['firstfr', 'lastfr', 'res', 'rate', 'trigtime.secs', 'format'])
+
+
+class RamTakes(object):
+    def __init__(self, camera):
+        self.camera = camera
+
+    def __len__(self):
+        return int(self.camera.ask('get cam.cines'))
+
+    def __getitem__(self, index):
+        if index >= len(self):
+            raise IndexError
+        return self.camera.get_takeinfo('c{}'.format(index + 1), ['state', 'firstfr', 'lastfr', 'res', 'rate',
+                                                                  'trigtime.secs', 'format', 'info.serial',
+                                                                  'info.name'])
 
 
 if __name__ == '__main__':
