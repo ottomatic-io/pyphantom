@@ -422,7 +422,10 @@ class Phantom(object):
     def set_rtc(self, timestamp=None):
         if not timestamp:
             timestamp = time.time()
-        self.ask('setrtc {{ value: {} }}'.format(int(timestamp)))
+        if self.protocol == 'PH16':
+            self.ask('setrtc {{ value: {} }}'.format(int(timestamp)))
+        elif self.protocol == 'PH7':
+            self.ask('set hw.rtctime.secs {}'.format(int(timestamp)))
 
 
 class Takes(object):
