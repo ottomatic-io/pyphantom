@@ -171,11 +171,17 @@ class Phantom(object):
 
     @cached_property_with_ttl(ttl=0.5)
     def vcdina(self):
-        return round(float(self.ask('get info.vcdina')), 1)
+        try:
+            return round(float(self.ask('get info.vcdina')), 1)
+        except CameraError:
+            return 0
 
     @cached_property_with_ttl(ttl=0.5)
     def vcdinb(self):
-        return round(float(self.ask('get info.vcdinb')), 1)
+        try:
+            return round(float(self.ask('get info.vcdinb')), 1)
+        except CameraError:
+            return 0
 
     @cached_property_with_ttl(ttl=0.5)
     def battstate(self):
