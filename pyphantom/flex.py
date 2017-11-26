@@ -332,11 +332,13 @@ class Phantom(object):
 
         while True:
             data = the_socket.recv(8192)
-            # print repr(data)
-            if data.endswith(end) and not data.endswith(escaped_crlf):
-                total_data.append(data)
-                break
             total_data.append(data)
+
+            # In case last received packet is only one byte we need to check the last two packets
+            last_2_packets = ''.join(total_data[-2:])
+            if last_2_packets.endswith(end) and not last_2_packets.endswith(escaped_crlf):
+                break
+
         return ''.join(total_data)
 
     def ask(self, command):
