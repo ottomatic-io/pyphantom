@@ -28,7 +28,7 @@ def discover(networks):
         except socket.error as e:
             logger.warning('Could not send discovery packet to {}: {}'.format(ipv4['broadcast'], e))
 
-    time.sleep(0.2)
+    time.sleep(0.6)
 
     while True:
         try:
