@@ -461,7 +461,11 @@ class RamTakes(object):
         self.camera = camera
 
     def __len__(self):
-        return int(self.camera.ask('get cam.cines'))
+        if self.camera.protocol == 'PH16':
+            return int(self.camera.ask('get cam.cines'))
+        elif self.camera.protocol == 'PH7':
+            # disable ram cines for now
+            return 0
 
     def __getitem__(self, index):
         if index >= len(self):
