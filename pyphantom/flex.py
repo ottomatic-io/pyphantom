@@ -404,18 +404,27 @@ class Phantom(object):
             logger.warning(e)
 
     def set_playhead(self, frame):
-        if frame != self.video_play['fn'] \
-                and frame in range(int(self.video_play['in']), int(self.video_play['out'])):
-            self.ask('vplay {{fn: {}}}'.format(frame))
+        if self.protocol == 'PH16':
+            if frame != self.video_play['fn'] \
+                    and frame in range(int(self.video_play['in']), int(self.video_play['out'])):
+                self.ask('vplay {{fn: {}}}'.format(frame))
 
     def set_in(self, frame):
         if int(frame) < int(self.c1['out']):
-            self.ask('vplay {{in: {}}}'.format(frame))
+            if self.protocol == 'PH16':
+                self.ask('vplay {{in: {}}}'.format(frame))
+            elif self.protocol == 'PH7':
+                self.ask('vplay {{firstframe: {}}}'.format(frame))
+
             self.ask('set c1.in: {}'.format(frame))
 
     def set_out(self, frame):
         if int(frame) > int(self.c1['in']):
-            self.ask('vplay {{out: {}}}'.format(frame))
+            if self.protocol == 'PH16':
+                self.ask('vplay {{out: {}}}'.format(frame))
+            elif self.protocol == 'PH7':
+                self.ask('vplay {{lastframe: {}}}'.format(frame))
+
             self.ask('set c1.out: {}'.format(frame))
 
     def set_value(self, key, value):
