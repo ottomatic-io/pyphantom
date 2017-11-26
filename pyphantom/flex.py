@@ -156,10 +156,7 @@ class Phantom(object):
 
     @property
     def progress(self):
-        if self.protocol == 'PH16':
-            return int(self.ask('get mag.progress'))
-        elif self.protocol == 'PH7':
-            return int(self.ask('get fstat')['fstat']['in_progress'])
+        return int(self.ask('get mag.progress'))
 
     @property
     def mag_state(self):
