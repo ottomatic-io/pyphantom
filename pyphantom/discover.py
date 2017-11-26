@@ -58,9 +58,9 @@ def get_networks():
         try:
             ipv4 = netifaces.ifaddresses(interface)[netifaces.AF_INET][0]
             logger.debug('{}: ip={}, netmask={}, broadcast={}'.format(interface,
-                                                                     ipv4['addr'],
-                                                                     ipv4['netmask'],
-                                                                     ipv4['broadcast']))
+                                                                      ipv4['addr'],
+                                                                      ipv4['netmask'],
+                                                                      ipv4['broadcast']))
             networks[interface] = ipv4
 
         except KeyError:
