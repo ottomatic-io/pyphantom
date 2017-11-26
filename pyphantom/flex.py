@@ -189,7 +189,7 @@ class Phantom(object):
 
     @property
     def video_play(self):
-        return self.ask('get video.play')['play']
+        return self.ask('get video.play')
 
     @property
     def resolution(self):
