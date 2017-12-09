@@ -67,10 +67,17 @@ def parse_response(response):
             return parse_simple(response)
         else:
             return parse_flag_list(response)
+
     elif brackets:
         clean = ' '.join(response.lstrip('Ok!').split()).replace('\\', '')
+
+        # Remove key and replace by X as a marker so it can easily be removed.
+        # I am sure there is a cleaner way to do this.
+        clean = ':'.join(clean.split(':')[1:])
+        clean = 'X :' + clean
+
         try:
-            return yaml.load(clean)
+            return yaml.load(clean)['X']
         except yaml.parser.ParserError:
             raise
 
@@ -148,7 +155,7 @@ class Phantom(object):
 
     @cached_property_with_ttl(ttl=0.5)
     def defc(self):
-        return self.ask('get defc')['defc']
+        return self.ask('get defc')
 
     @cached_property_with_ttl(ttl=0.5)
     def shutter_angle(self):
