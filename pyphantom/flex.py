@@ -62,7 +62,7 @@ def parse_response(response):
 
     brackets = response.count('{')
 
-    if brackets == 1 and not '\t' in response:
+    if brackets == 1 and '\t' not in response:
         if response.count(':') > 1:
             return parse_simple(response)
         else:
