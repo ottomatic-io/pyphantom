@@ -361,6 +361,9 @@ class Phantom(object):
 
         while True:
             data = the_socket.recv(8192)
+            if not data:
+                logger.warning('No data..')
+                break
             total_data.append(data)
 
             # In case last received packet is only one byte we need to check the last two packets
