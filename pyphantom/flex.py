@@ -385,6 +385,9 @@ class Phantom(object):
 
                 return parse_response(response)
 
+        except AttributeError:
+            logger.warn('Trying to send data without connection')
+
         except socket.timeout:
             self.disconnect()
             raise ConnectionError("Socket timeout")
