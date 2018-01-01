@@ -451,7 +451,7 @@ class Phantom(object):
             elif self.protocol == 'PH7':
                 self.ask('vplay {{firstframe: {}}}'.format(frame))
 
-            self.ask('set c1.in: {}'.format(frame))
+            self.ask('set c1.in {}'.format(frame))
 
     def set_out(self, frame):
         if int(frame) > int(self.c1['in']):
@@ -460,10 +460,10 @@ class Phantom(object):
             elif self.protocol == 'PH7':
                 self.ask('vplay {{lastframe: {}}}'.format(frame))
 
-            self.ask('set c1.out: {}'.format(frame))
+            self.ask('set c1.out {}'.format(frame))
 
     def set_value(self, key, value):
-        self.ask('set {}: {}'.format(key, value))
+        self.ask('set {} {}'.format(key, value))
 
     def save(self):
         self.ask('fsave {{cine: 1, firstframe: {}, lastframe: {}}}'.format(self.c1['in'], self.c1['out']))
