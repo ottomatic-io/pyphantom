@@ -12,9 +12,10 @@ from threading import current_thread
 import yaml
 from cached_property import cached_property_with_ttl, cached_property
 
+from pyphantom.structures import PhantomStructures
 from pyphantom.utils import threaded, get_mac
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger()
 
 
 def angle2exp(rate, angle):
@@ -106,6 +107,7 @@ class Phantom(object):
 
         self.connected = False
         self.alive = False
+        self._stop_reconnector = False
 
         self.socket = None
         self.socket_data = None
@@ -117,6 +119,10 @@ class Phantom(object):
         self.last_message = 0
 
     fake_ssrc_counter = 0
+
+    @property
+    def structures(self):
+        return PhantomStructures(self)
 
     def get_fake_ssrc(self):
         with self.lock:
