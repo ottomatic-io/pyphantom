@@ -169,7 +169,10 @@ class Phantom(object):
 
     @property
     def progress(self):
-        return int(self.ask('get mag.progress'))
+        try:
+            return int(self.ask('get mag.progress'))
+        except ValueError:
+            return 0
 
     @property
     def mag_state(self):
