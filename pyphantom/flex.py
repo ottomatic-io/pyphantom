@@ -263,14 +263,16 @@ class Phantom(object):
             if not current_thread().parent_thread.is_alive():
                 logger.warning('Parent thread died. Stopping check_alive')
                 break
-            time.sleep(0.4)
-            lag = time.time() - self.last_message
-            if lag > 0.3 and self.connected:
-                logger.warning("Connection lag: {:0.3f}s".format(lag))
-                self.alive = False
-            if lag > 10 and self.connected:
-                logger.error("Connection hangs. Disconnecting..")
-                self.disconnect()
+
+            if self.connected:
+                try:
+                    _ = self.mag_state
+                    time.sleep(0.4)
+                except Exception as e:
+                    logger.error('Connection dead. %s', e)
+                    self.disconnect()
+            else:
+                break
 
     def disconnect(self):
         self.alive = False
@@ -283,18 +285,32 @@ class Phantom(object):
 
     @threaded
     def reconnector(self):
+        logger.info('Starting reconnector')
         self.alive = False
         self.check_alive()
         while True:
+            if self._stop_reconnector:
+                logger.info('Stopping reconnector')
+                break
             if not current_thread().parent_thread.is_alive():
                 logger.warning('Parent thread died. Stopping reconnector')
                 break
             if not self.connected:
                 try:
                     self.connect()
+                except socket.error as e:
+                    if e.errno == errno.ECONNREFUSED:
+                        logger.info('Connection refused')
+                        self.stop_reconnector()
+                        self.disconnect()
+                    else:
+                        raise
                 except Exception as e:
                     logger.exception(e)
             time.sleep(0.5)
+
+    def stop_reconnector(self):
+        self._stop_reconnector = True
 
     def __enter__(self):
         return self
