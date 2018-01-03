@@ -271,7 +271,7 @@ class Phantom(object):
                     _ = self.mag_state
                     time.sleep(check_interval)
                 except Exception as e:
-                    logger.error('Connection dead. %s', e)
+                    logger.warning('Connection dead. %s', e)
                     self.disconnect()
             else:
                 break
