@@ -260,7 +260,7 @@ class Phantom(object):
                 logger.info('Camera firmware version: {}'.format(cam_firmware_version))
 
     @threaded
-    def check_alive(self):
+    def check_alive(self, check_interval=0.4):
         while True:
             if not current_thread().parent_thread.is_alive():
                 logger.warning('Parent thread died. Stopping check_alive')
@@ -269,7 +269,7 @@ class Phantom(object):
             if self.connected:
                 try:
                     _ = self.mag_state
-                    time.sleep(0.4)
+                    time.sleep(check_interval)
                 except Exception as e:
                     logger.error('Connection dead. %s', e)
                     self.disconnect()
