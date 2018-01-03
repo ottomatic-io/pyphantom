@@ -107,7 +107,6 @@ class Phantom(object):
 
         self.connected = False
         self.alive = False
-        self._stop_reconnector = False
 
         self.socket = None
         self.socket_data = None
@@ -286,35 +285,6 @@ class Phantom(object):
             self.socket_data.close()
         logger.info('Disconnected')
 
-    @threaded
-    def reconnector(self):
-        logger.info('Starting reconnector')
-        self.alive = False
-        self.check_alive()
-        while True:
-            if self._stop_reconnector:
-                logger.info('Stopping reconnector')
-                break
-            if not current_thread().parent_thread.is_alive():
-                logger.warning('Parent thread died. Stopping reconnector')
-                break
-            if not self.connected:
-                try:
-                    self.connect()
-                except socket.error as e:
-                    if e.errno == errno.ECONNREFUSED:
-                        logger.info('Connection refused')
-                        self.stop_reconnector()
-                        self.disconnect()
-                    else:
-                        raise
-                except Exception as e:
-                    logger.exception(e)
-            time.sleep(0.5)
-
-    def stop_reconnector(self):
-        self._stop_reconnector = True
-
     def __enter__(self):
         return self
 
@@ -399,9 +369,7 @@ class Phantom(object):
             self.disconnect()
 
             if serr.errno == errno.EBADF:
-                logger.error('bad file descriptor. reconnecting')
-                self.connect()
-                self.ask(command)
+                raise ConnectionError("bad file descriptor")
             elif serr.errno == errno.ECONNREFUSED:
                 raise ConnectionError("connection refused")
             elif serr.errno == errno.EPIPE:
