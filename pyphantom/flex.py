@@ -217,12 +217,12 @@ class Phantom(object):
         with self.connect_lock:
             if not self.connected:
                 self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                self.socket.settimeout(2.0)
+                self.socket.settimeout(4.0)
                 self.socket.connect((self.ip, self.port))
 
                 if self.protocol == 'PH16':
                     self.socket_data = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                    self.socket_data.settimeout(2.0)
+                    self.socket_data.settimeout(4.0)
                     data_port = self.port + 1
                     self.socket_data.connect((self.ip, data_port))
                     socket_data_port = self.socket_data.getsockname()[1]
