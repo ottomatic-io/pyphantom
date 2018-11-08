@@ -37,7 +37,7 @@ def get_networks():
         try:
             if_addresses = netifaces.ifaddresses(interface)
             config = if_addresses[netifaces.AF_INET][0]
-            config['mac'] = if_addresses[netifaces.AF_LINK][0]['addr']
+            config['mac'] = if_addresses[netifaces.AF_LINK][0]['addr'].replace(':', '')
             logger.debug('{}: ip={}, netmask={}, broadcast={}, mac={}'.format(interface,
                                                                               config['addr'],
                                                                               config['netmask'],
