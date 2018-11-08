@@ -4,7 +4,6 @@ from __future__ import print_function, absolute_import
 import errno
 import logging
 import socket
-import subprocess
 import time
 from multiprocessing import Lock
 from threading import current_thread
@@ -13,7 +12,7 @@ import yaml
 from cached_property import cached_property_with_ttl, cached_property
 
 from pyphantom.structures import PhantomStructures
-from pyphantom.utils import threaded, get_mac
+from pyphantom.utils import threaded, get_mac, get_interface_of_ip
 
 logger = logging.getLogger()
 
@@ -243,9 +242,7 @@ class Phantom(object):
                 # sync camera clock to this systems clock
                 self.set_rtc()
 
-                self.interface = subprocess.check_output(
-                    'route -n get {} | grep interface | cut -d " " -f 4'.format(self.ip),
-                    shell=True).strip()
+                self.interface = get_interface_of_ip(self.ip)
 
                 logger.info('Connected to a {} at {} on interface {}'.format(self.model, self.ip,
                                                                              self.interface))
