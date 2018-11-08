@@ -55,16 +55,19 @@ def discover(networks):
 
 
 def get_networks():
-    interfaces = [i for i in netifaces.interfaces() if i.startswith('en')]
     networks = {}
-    for interface in interfaces:
+    for interface in netifaces.interfaces():
         try:
-            ipv4 = netifaces.ifaddresses(interface)[netifaces.AF_INET][0]
-            logger.debug('{}: ip={}, netmask={}, broadcast={}'.format(interface,
-                                                                      ipv4['addr'],
-                                                                      ipv4['netmask'],
-                                                                      ipv4['broadcast']))
-            networks[interface] = ipv4
+            if_addresses = netifaces.ifaddresses(interface)
+            config = if_addresses[netifaces.AF_INET][0]
+            config['mac'] = if_addresses[netifaces.AF_LINK][0]['addr']
+            logger.debug('{}: ip={}, netmask={}, broadcast={}, mac={}'.format(interface,
+                                                                              config['addr'],
+                                                                              config['netmask'],
+                                                                              config['broadcast'],
+                                                                              config['mac'],
+                                                                              ))
+            networks[interface] = config
 
         except KeyError:
             pass
