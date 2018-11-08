@@ -13,7 +13,8 @@ def cli():
 
 @cli.command()
 def info():
-    from pyphantom.discover import discover, get_networks
+    from pyphantom.discover import discover
+    from pyphantom.network import get_networks
 
     networks = get_networks()
     cameras = discover(networks)

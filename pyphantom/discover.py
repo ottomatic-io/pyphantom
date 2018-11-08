@@ -1,6 +1,5 @@
 from __future__ import print_function, absolute_import
 
-import netifaces
 import shlex
 import socket
 import time
@@ -9,6 +8,7 @@ from collections import namedtuple
 from threading import Thread
 
 from pyphantom.flex import Phantom
+from pyphantom.network import get_networks
 
 logger = logging.getLogger()
 
@@ -52,27 +52,6 @@ def discover(networks):
             break
 
     return cameras
-
-
-def get_networks():
-    networks = {}
-    for interface in netifaces.interfaces():
-        try:
-            if_addresses = netifaces.ifaddresses(interface)
-            config = if_addresses[netifaces.AF_INET][0]
-            config['mac'] = if_addresses[netifaces.AF_LINK][0]['addr']
-            logger.debug('{}: ip={}, netmask={}, broadcast={}, mac={}'.format(interface,
-                                                                              config['addr'],
-                                                                              config['netmask'],
-                                                                              config['broadcast'],
-                                                                              config['mac'],
-                                                                              ))
-            networks[interface] = config
-
-        except KeyError:
-            pass
-
-    return networks
 
 
 class Cameras(Thread):

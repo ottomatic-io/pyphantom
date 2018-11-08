@@ -1,3 +1,4 @@
+import logging
 import os
 import platform
 import subprocess
@@ -5,6 +6,8 @@ from multiprocessing import Process
 from threading import Thread, current_thread
 
 import psutil
+
+logger = logging.getLogger()
 
 
 class ChildThread(Thread):
@@ -67,25 +70,3 @@ def get_sys_info():
     cores = psutil.cpu_count(logical=False)
 
     return locals()
-
-
-def get_mac(ip):
-    mac_raw = subprocess.check_output("arp -n {} | cut -d ' ' -f4".format(ip, ip), shell=True).strip()
-    mac = ''.join(['{:02x}'.format(int(x, 16)) for x in mac_raw.split(':')])
-    return mac
-
-
-def get_interface_of_ip(ip):
-    output = subprocess.check_output(['/sbin/route', '-n', 'get', ip])
-
-    for line in output.splitlines():
-        if 'interface' in line:
-            return line.split()[1]
-
-
-def get_mac_of_interface(interface):
-    output = subprocess.check_output(['/sbin/ifconfig', interface])
-
-    for line in output.splitlines():
-        if 'ether' in line:
-            return line.split()[1].replace(':', '')
