@@ -1,11 +1,12 @@
+*.egg-info
 *.pyc
-.DS_Store
 .cache
+.coverage
+.DS_Store
+.eggs
 .idea
 .ipynb_checkpoints
-*.egg-info
 build
-dist
 build_debug
+dist
 venv
-.coverage
