@@ -8,6 +8,7 @@ pyphantom = {editable = true, path = "."}
 
 [dev-packages]
 "pytest" = "*"
+"pcapy" = {ref = "bufsize", git = "https://github.com/cbenhagen/pcapy.git"}
 
 [requires]
 python_version = "2.7"

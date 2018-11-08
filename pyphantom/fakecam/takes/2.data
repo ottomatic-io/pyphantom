@@ -1,0 +1,135 @@
+fc22 : {		\
+	res : 4096 x 2304,	\
+	rate : 25,	\
+	exp : 20000000,	\
+	shoff : 0,	\
+	edrexp : 0,	\
+	ptframes : 1,	\
+	bcount : 0,	\
+	bperiod : 33323389,	\
+	hqenable : 0,	\
+	frcount : 80,	\
+	ramp : "",	\
+	state : { STR },	\
+	start : 0x1840000,	\
+	len : 0x3E74A000,	\
+	frsize : 11796480,	\
+	frspace : 1047830528,	\
+	firstfr : -79,	\
+	lastfr : 0,	\
+	format : 266,	\
+	decimation : 1,	\
+	in : -79,	\
+	out : 0,	\
+	aexpmode : 0,	\
+	aexpcomp : 0,	\
+	audiopktsize : 0,	\
+	trigtime : {		\
+		secs : 1452185951,	\
+		frac : 5787 	\
+	},	\
+	cam : {		\
+		syncimg : 0,	\
+		master : 0,	\
+		tcmode : 1,	\
+		trigpol : 0,	\
+		trigfilt : 32,	\
+		frdelay : 0,	\
+		startonacq : 0,	\
+		aux1mode : 2,	\
+		aux2mode : 2,	\
+		aux3mode : 0,	\
+		memgateen : 0,	\
+		membpp : 12,	\
+		tsformat : 1 	\
+	},	\
+	info : {		\
+		hwver : 4001,	\
+		sver : 1029,	\
+		fver : 53,	\
+		pver : 16,	\
+		model : "Phantom Flex4K",	\
+		sensor : 4000,	\
+		snsversion : 100,	\
+		snsserial : 0,	\
+		kernel : 563,	\
+		swver : 167360191,	\
+		xver : 1200700,	\
+		serial : 16001,	\
+		cfa : 3,	\
+		filter : 0,	\
+		name : "KW_FLEX",	\
+		mdepths : 0x1000,	\
+		genlockstatus : 0,	\
+		snstemp : 30,	\
+		camtemp : 50,	\
+		features : "bref blk4 shtr attach earlyimg notify log dualp aux2 wide mm24 v4k genlock audio prores mag" 	\
+	},	\
+	adj : {		\
+		red : 1,	\
+		green : 1,	\
+		blue : 1,	\
+		wbtemp : 5600,	\
+		wbcc : 0,	\
+		wbred : 1.079672124,	\
+		wbblue : 1.60720448,	\
+		edgeg : 0,	\
+		edger : 0,	\
+		edgeth : 0,	\
+		gamma : 2.2,	\
+		rgamma : 0,	\
+		bgamma : 0,	\
+		toe : 1,	\
+		gain : 1,	\
+		offset : 0,	\
+		flare : 0,	\
+		hue : 0,	\
+		sat : 1,	\
+		rped : 0,	\
+		gped : 0,	\
+		bped : 0,	\
+		tone : "EI1000 0.030 0.100 0.068 0.200 0.159 0.400 0.260 0.600 0.313 0.700 0.700 0.970",	\
+		mmsat : "",	\
+		mmhue : "",	\
+		chroma : 1,	\
+		matrix : 1,	\
+		log : 1,	\
+		sdimin : 32,	\
+		sdimax : 960,	\
+		cmatrix : "cal 1.61481 -0.51633 0.033238  -0.10671 0.757674 0.548315  -0.0445308 -0.552791 2.56194",	\
+		umatrix : "userMatrix 1.000000 0.000000 0.000000 0.000000 1.000000 0.000000 0.000000 0.000000 1.000000",	\
+		filter : "" 	\
+	},	\
+	meta : {		\
+		name : "A364",	\
+		uuid : "00000000-3e81-4000-d68e-995f0000169b",	\
+		system : 53,	\
+		pbrate : 25,	\
+		tcrate : 25,	\
+		trigtc : "16:59:11.00",	\
+		pax : 0,	\
+		pay : 0,	\
+		paox : -2048,	\
+		paoy : -1152,	\
+		vox : 0,	\
+		voy : 0,	\
+		vw : 4096,	\
+		vh : 2304,	\
+		vow : 1911,	\
+		voh : 1075,	\
+		ox : 0,	\
+		oy : 0,	\
+		w : 4096,	\
+		h : 2304,	\
+		ow : 1920,	\
+		oh : 1080,	\
+		crop : 0,	\
+		resize : 1,	\
+		lens : "",	\
+		fstop : 0,	\
+		flen : 0,	\
+		gps : "",	\
+		comment : "",	\
+		xset : "" 	\
+	} 	\
+}

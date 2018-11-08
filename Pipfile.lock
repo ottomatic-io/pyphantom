@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "6db36ff635b56941fbf7ac7c6ca236467db5f5fdc87d9a1dde093aeae95575e0"
+            "sha256": "28118b426106967cb79978ccd26197bcf814fa5a5ab973dbffbe1acbb7959035"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -120,6 +120,10 @@
             ],
             "markers": "python_version < '3.6'",
             "version": "==2.3.2"
+        },
+        "pcapy": {
+            "git": "https://github.com/cbenhagen/pcapy.git",
+            "ref": "19c891409cd64f08075d59137bc86f6156fde10b"
         },
         "pluggy": {
             "hashes": [

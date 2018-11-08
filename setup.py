@@ -11,5 +11,5 @@ setup(
     scripts=[],
     use_scm_version=True,
     setup_requires=["pytest-runner", "setuptools_scm"],
-    tests_require=["pytest", "tempdir"],
+    tests_require=["pytest", "tempdir", "pcapy"],
 )

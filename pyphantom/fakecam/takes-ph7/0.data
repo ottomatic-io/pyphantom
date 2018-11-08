@@ -1,0 +1,156 @@
+fc0 : {		\
+	res : 2560 x 1440,	\
+	rate : 150,	\
+	exp : 3333333,	\
+	shoff : 0,	\
+	edrexp : 0,	\
+	frdelay : 0,	\
+	ptframes : 1,	\
+	bcount : 0,	\
+	bperiod : 5128205,	\
+	hqenable : 0,	\
+	frcount : 1955,	\
+	ramp : "",	\
+	autoexp : {		\
+		rect : {		\
+			x : 0,	\
+			y : 0,	\
+			w : 2,	\
+			h : 2 	\
+		},	\
+		axlevel : 0,	\
+		head : 0,	\
+		lockmode : 0,	\
+		enable : 0 	\
+	},	\
+	state : { STR },	\
+	start : 00A21C00,	\
+	len : 1F584000,	\
+	frsize : 0,	\
+	frspace : 0,	\
+	trigtime : {		\
+		secs : 1453818803,	\
+		frac : 949154 	\
+	},	\
+	trigoff : 1954,	\
+	firstfr : -1255,	\
+	lastfr : 0,	\
+	format : 266,	\
+	i3trigpos : 0,	\
+	autotrig : 0,	\
+	decimation : 7,	\
+	serial : 11884,	\
+	in : -1255,	\
+	out : 0,	\
+	cam : {		\
+		syncimg : 0,	\
+		master : 0,	\
+		locktoirig : 0,	\
+		tcmode : 0,	\
+		modirig : 0,	\
+		trigpol : 0,	\
+		trigfilt : 32,	\
+		frdelay : 0,	\
+		startonacq : 0,	\
+		irigouten : 0,	\
+		memgateen : 0,	\
+		membpp : 12,	\
+		tsformat : 1,	\
+		heads : 0 	\
+	},	\
+	profile : {		\
+		atrig : 0,	\
+		p0cnt : 0,	\
+		p0rate : 0,	\
+		p0exp : 0,	\
+		p1cnt : 0,	\
+		p1rate : 0,	\
+		p1exp : 0,	\
+		p2cnt : 0,	\
+		p2rate : 0,	\
+		p2exp : 0,	\
+		p3cnt : 0,	\
+		p3rate : 0,	\
+		p3exp : 0 	\
+	},	\
+	info : {		\
+		hwver : 135,	\
+		model : "Phantom flex",	\
+		sensor : 130,	\
+		snsversion : 0,	\
+		snsserial : 0,	\
+		kernel : 16140,	\
+		swver : 797,	\
+		xver : 573244,	\
+		serial : 11884,	\
+		cfa : 3,	\
+		filter : 0,	\
+		name : "11884",	\
+		mdepths : 00001000,	\
+		tone1 : "medium 0.125 0.0859 0.25 0.218 0.5 0.5 0.75 0.768",	\
+		tone2 : "strong 0.125 0.0625 0.25 0.195 0.5 0.5 0.75 0.79",	\
+		tone3 : "highs1 0.18 0.25 0.375 0.70 0.5 0.860 0.75 0.95",	\
+		tone4 : "",	\
+		matrix1 : "daylight -1.45 0.27 -0.15 -0.39 -0.07 -0.80",	\
+		matrix2 : "",	\
+		matrix3 : "",	\
+		matrix4 : "",	\
+		genlockstatus : 0,	\
+		snstemp : 30,	\
+		camtemp : 38,	\
+		features : "bref shtr blk4 v444 hqmode smpte vsync      " 	\
+	},	\
+	adj : {		\
+		red : 2048,	\
+		green : 1024,	\
+		blue : 1566,	\
+		gamma : 2275,	\
+		rgamma : 0,	\
+		bgamma : 0,	\
+		gain : 1024,	\
+		offset : 0,	\
+		flare : 0,	\
+		hue : 0,	\
+		sat : 1024,	\
+		rped : 0,	\
+		gped : 0,	\
+		bped : 0,	\
+		tone : 4,	\
+		chroma : 1024,	\
+		matrix : 0,	\
+		mmhue : "",	\
+		mmsat : "",	\
+		sdimin : 0,	\
+		sdimax : 1000 	\
+	},	\
+	meta : {		\
+		name : "",	\
+		uuid : "00000000-2e6c-4000-d6a7-83b3000e7ba2",	\
+		system : 21,	\
+		pbrate : 25 ,	\
+		tcrate : 25 ,	\
+		trigtc : "15:20:23.17",	\
+		pax : 0,	\
+		pay : 1440,	\
+		paox : 0,	\
+		paoy : 0,	\
+		vox : 0,	\
+		voy : 0,	\
+		vw : 2560,	\
+		vh : 1440,	\
+		vow : 1920,	\
+		voh : 1080,	\
+		ox : 0,	\
+		oy : 0,	\
+		w : 0,	\
+		h : 0,	\
+		ow : 0,	\
+		oh : 0,	\
+		crop : 0,	\
+		resize : 0,	\
+		lens : "",	\
+		fstop : 0 ,	\
+		flen : 0 ,	\
+		comment : "" 	\
+	} 	\
+}

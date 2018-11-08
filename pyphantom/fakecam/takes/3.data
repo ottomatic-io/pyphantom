@@ -1,0 +1,135 @@
+fc29 : {		\
+	res : 4096 x 2304,	\
+	rate : 938,	\
+	exp : 133262,	\
+	shoff : 0,	\
+	edrexp : 0,	\
+	ptframes : 1,	\
+	bcount : 0,	\
+	bperiod : 10416317,	\
+	hqenable : 0,	\
+	frcount : 4736,	\
+	ramp : "",	\
+	state : { STR },	\
+	start : 0x1840000,	\
+	len : 0x3E74A000,	\
+	frsize : 4812800,	\
+	frspace : 1047830528,	\
+	firstfr : -4735,	\
+	lastfr : 0,	\
+	format : 516,	\
+	decimation : 1,	\
+	in : -4735,	\
+	out : 0,	\
+	aexpmode : 0,	\
+	aexpcomp : 0,	\
+	audiopktsize : 0,	\
+	trigtime : {		\
+		secs : 1480928960,	\
+		frac : 459813 	\
+	},	\
+	cam : {		\
+		syncimg : 0,	\
+		master : 0,	\
+		tcmode : 0,	\
+		trigpol : 0,	\
+		trigfilt : 32,	\
+		frdelay : 0,	\
+		startonacq : 0,	\
+		aux1mode : 0,	\
+		aux2mode : 0,	\
+		aux3mode : 0,	\
+		memgateen : 0,	\
+		membpp : 12,	\
+		tsformat : 1 	\
+	},	\
+	info : {		\
+		hwver : 4001,	\
+		sver : 1032,	\
+		fver : 65,	\
+		pver : 16,	\
+		model : "Phantom Flex4K",	\
+		sensor : 4000,	\
+		snsversion : 100,	\
+		snsserial : 0,	\
+		kernel : 587,	\
+		swver : 167360237,	\
+		xver : 1200700,	\
+		serial : 16001,	\
+		cfa : 3,	\
+		filter : 0,	\
+		name : "16001",	\
+		mdepths : 0x1000,	\
+		genlockstatus : 0,	\
+		snstemp : 19,	\
+		camtemp : 25,	\
+		features : "bref blk4 shtr attach earlyimg notify log dualp aux2 wide mm24 v4k genlock audio prores mag" 	\
+	},	\
+	adj : {		\
+		red : 1,	\
+		green : 1,	\
+		blue : 1,	\
+		wbtemp : 5600,	\
+		wbcc : 0,	\
+		wbred : 1.098809019,	\
+		wbblue : 1.229431919,	\
+		edgeg : 0,	\
+		edger : 0,	\
+		edgeth : 0,	\
+		gamma : 2.22,	\
+		rgamma : 0,	\
+		bgamma : 0,	\
+		toe : 1,	\
+		gain : 1,	\
+		offset : 0,	\
+		flare : 0,	\
+		hue : 0,	\
+		sat : 1,	\
+		rped : 0,	\
+		gped : 0,	\
+		bped : 0,	\
+		tone : "tone",	\
+		mmsat : "",	\
+		mmhue : "",	\
+		chroma : 1,	\
+		matrix : 1,	\
+		log : 1,	\
+		sdimin : 32,	\
+		sdimax : 960,	\
+		cmatrix : "cal 1.51198 -0.430469 0.0669433  -0.115077 0.759451 0.424494  -0.0514928 -0.570455 1.98838",	\
+		umatrix : "userMatrix 1.000000 0.000000 0.000000 0.000000 1.000000 0.000000 0.000000 0.000000 1.000000",	\
+		filter : "" 	\
+	},	\
+	meta : {		\
+		name : "",	\
+		uuid : "00000000-3e81-4000-d845-2ec000070425",	\
+		system : 21,	\
+		pbrate : 25,	\
+		tcrate : 25,	\
+		trigtc : "07:31:16.11",	\
+		pax : 0,	\
+		pay : 0,	\
+		paox : 0,	\
+		paoy : 0,	\
+		vox : 0,	\
+		voy : 0,	\
+		vw : 4096,	\
+		vh : 2304,	\
+		vow : 1911,	\
+		voh : 1075,	\
+		ox : 0,	\
+		oy : 0,	\
+		w : 0,	\
+		h : 0,	\
+		ow : 0,	\
+		oh : 0,	\
+		crop : 0,	\
+		resize : 0,	\
+		lens : "",	\
+		fstop : 0,	\
+		flen : 0,	\
+		gps : "",	\
+		comment : "",	\
+		xset : "" 	\
+	} 	\
+}
