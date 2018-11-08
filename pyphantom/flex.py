@@ -12,7 +12,7 @@ import yaml
 from cached_property import cached_property_with_ttl, cached_property
 
 from pyphantom.structures import PhantomStructures
-from pyphantom.utils import threaded, get_mac, get_interface_of_ip
+from pyphantom.utils import threaded, get_mac, get_interface_of_ip, get_mac_of_interface
 
 logger = logging.getLogger()
 
@@ -103,6 +103,7 @@ class Phantom(object):
         self.port = int(port)
         self.protocol = protocol
         self.interface = None
+        self.interface_mac = None
 
         self.connected = False
         self.alive = False
@@ -243,6 +244,7 @@ class Phantom(object):
                 self.set_rtc()
 
                 self.interface = get_interface_of_ip(self.ip)
+                self.interface_mac = get_mac_of_interface(self.interface)
 
                 logger.info('Connected to a {} at {} on interface {}'.format(self.model, self.ip,
                                                                              self.interface))
