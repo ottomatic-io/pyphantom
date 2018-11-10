@@ -77,7 +77,7 @@ class Cameras(Thread):
                 self.networks = networks
 
             cameras = discover(self.networks)
-            # logger.debug('Discovered %d cameras', len(cameras))
+            logger.debug("Discovered %d cameras", len(cameras))
 
             for camera_info in cameras:
                 if camera_info not in self.cameras:
@@ -98,7 +98,7 @@ class Cameras(Thread):
                     camera.disconnect()
                     del self.cameras[camera_info]
 
-            # logger.debug('Got %d connected cameras', len(self.cameras))
+            logger.debug("Got %d connected cameras", len(self.cameras))
 
             time.sleep(0.1)
 
