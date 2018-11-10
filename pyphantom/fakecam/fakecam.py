@@ -69,7 +69,9 @@ def phantom_format(key, value, stream=None):
 
 
 def phantom_dictformat(mydict, stream):
-    assert isinstance(mydict, dict)
+    if not isinstance(mydict, dict):
+        raise AssertionError()
+
     stream.write("{ ")
     first = True
     for key, value in mydict.items():
