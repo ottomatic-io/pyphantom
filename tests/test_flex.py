@@ -40,5 +40,5 @@ def test_dict(cam):
         "res": "4096x2304",
     }
     assert str(cam.structures.defc) == str(
-        {"exp": 1250000, "meta": {"crop": 0, "oh": 0, "ow": 0, "resize": 0}, "rate": 400, "res": "4096x2304"}
+        {"rate": 400, "res": "4096x2304", "exp": 1250000, "meta": {"crop": 0, "resize": 0, "ow": 0, "oh": 0}}
     )

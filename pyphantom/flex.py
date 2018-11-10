@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-from __future__ import print_function, absolute_import
-
 import errno
 import logging
 import socket
@@ -332,7 +329,7 @@ class Phantom(object):
         total_data = []
 
         while True:
-            data = the_socket.recv(8192)
+            data = the_socket.recv(8192).decode('ascii')
             if not data:
                 logger.warning("No data..")
                 break
@@ -345,11 +342,11 @@ class Phantom(object):
 
         return "".join(total_data)
 
-    def ask(self, command):
+    def ask(self, command: str):
         try:
             with self.lock:
                 # logger.debug('Command: {}'.format(command))
-                self.socket.sendall(command + "\n")
+                self.socket.sendall(command.encode('ascii') + b"\n")
                 response = self.recv_end(self.socket)
 
                 self.alive = True
@@ -388,9 +385,9 @@ class Phantom(object):
             self.disconnect()
             raise
 
-    def ask_raw(self, command):
+    def ask_raw(self, command: str):
         with self.lock:
-            self.socket.sendall(command + "\n")
+            self.socket.sendall(command.encode('ascii') + b"\n")
             response = self.recv_end(self.socket)
 
         return response
@@ -481,43 +478,3 @@ class RamTakes(object):
             "c{}".format(index + 1),
             ["state", "firstfr", "lastfr", "res", "rate", "trigtime.secs", "format", "info.serial", "info.name"],
         )
-
-
-if __name__ == "__main__":
-    import pprint
-    import struct
-
-    from pyphantom.discover import discover
-
-    FORMAT = "%(asctime)s %(module)-12s %(levelname)-8s %(message)s"
-    logging.basicConfig(format=FORMAT, level=logging.DEBUG)
-
-    networks = get_networks()
-    cameras = discover(networks)
-    c = cameras[0]
-
-    with Phantom(c.ip, c.port, c.protocol) as cam:
-        cam.connect()
-        logger.info(pprint.pformat(cam.ask("get info")))
-        for i in range(int(cam.ask("get mag.takes"))):
-            logger.debug(pprint.pformat(cam.ask("get fc0")))
-        if cam.protocol == "PH16":
-            img_cmd = "img { cine: 0, start: -1, cnt: 1, fmt: P10, from: 1 }"
-
-        elif cam.protocol == "PH7":
-            img_cmd = "img { cine: 0, start: -1, cnt: 1, fmt: flash }"
-
-        frame_info = cam.ask(img_cmd)
-        width, height = [int(x) for x in frame_info["res"].split("x")]
-        logger.debug("Ordered frame_")
-
-        if frame_info["fmt"] in ["P10", 266]:
-            frame_size = width * height * 10 / 8
-            frame_header = struct.pack("II", 8, frame_size)
-
-            print(cam.socket_data)
-
-            frame = cam.recvall(frame_size)
-            print("Got a frame with {} bytes length".format(len(frame)))
-        else:
-            logger.error("Got unexpected frame: {}".format(frame_info))

@@ -1,1 +1,1 @@
-from fakecam import run, get, state, load_takes, logger
+from .fakecam import run, get, state, load_takes, logger

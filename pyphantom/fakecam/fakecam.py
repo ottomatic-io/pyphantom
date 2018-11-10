@@ -1,24 +1,17 @@
-#!/usr/bin/env python
-from __future__ import print_function
-
+#!/usr/bin/env python3
 import glob
 import logging
 import os
 import socket
 import sys
 import time
+from io import StringIO
 from threading import Thread
 
 import yaml
 
-import ximg_send
-from fakecam_data import state, answers
-
-try:
-    from cStringIO import StringIO as _StringIO
-except ImportError:
-    from StringIO import StringIO as _StringIO
-
+from . import ximg_send
+from .fakecam_data import state, answers
 
 logger = logging.getLogger(__name__)
 FORMAT = "%(asctime)s %(name)-12s %(levelname)-8s %(message)s"
@@ -58,28 +51,28 @@ def parse_simple(response):
 
 def phantom_format(key, value, stream=None):
     if stream is None:
-        stream = _StringIO()
+        stream = StringIO()
     stream.write("{} : ".format(key))
     if type(value) in (int, float):
         stream.write(str(value))
-    elif type(value) == str:
+    elif isinstance(value, str):
         stream.write('"{}"'.format(value))
-    elif type(value) == list:
+    elif isinstance(value, list):
         stream.write("{")
         for item in value:
             stream.write(" {}".format(item))
         stream.write(" }")
-    elif type(value) == dict:
+    elif isinstance(value, dict):
         phantom_dictformat(value, stream)
 
     return stream.getvalue()
 
 
 def phantom_dictformat(mydict, stream):
-    assert type(mydict) == dict
+    assert isinstance(mydict, dict)
     stream.write("{ ")
     first = True
-    for key, value in mydict.iteritems():
+    for key, value in mydict.items():
         if not first:
             stream.write(", ")
         phantom_format(key, value, stream)
@@ -102,7 +95,7 @@ def get(state, keystring):
 @threaded
 def send_frame(socket, cine, count=1):
     raw_path = os.path.join(takes_path, "./{}.raw".format(cine))
-    with open(raw_path) as f:
+    with open(raw_path, 'rb') as f:
         logger.debug("sending {}.raw".format(cine))
         socket.sendall(f.read() * count)
 
@@ -147,7 +140,7 @@ def responder(clientsocket, address, clientsocket_data, address_data):
 
     logger.info("connection from {}".format(address))
     while True:
-        command = clientsocket.recv(1024)
+        command = clientsocket.recv(1024).decode('ascii')
         answer = None
         img = ""
         ximg = ""
@@ -194,7 +187,7 @@ def responder(clientsocket, address, clientsocket_data, address_data):
                     clean = " ".join(command.lstrip("vplay ").split()).replace("\\", "")
                     vplay = yaml.load(clean)
                     try:
-                        for key, value in vplay.iteritems():
+                        for key, value in vplay.items():
                             state["video"]["play"][key] = value
                     except:
                         logger.warning("vplay: {}".format(vplay))
@@ -221,7 +214,7 @@ def responder(clientsocket, address, clientsocket_data, address_data):
                 # uncomment to simulate slow connection
                 # import time; time.sleep(0.6)
 
-                clientsocket.send(str(answer) + "\r\n")
+                clientsocket.send(answer.encode('ascii') + b"\r\n")
 
                 if ximg:
                     ximg_send.send_frame(int(ximg["cine"]), int(ximg["cnt"]), ximg["dest"], ximg["ssrc"])
@@ -230,7 +223,7 @@ def responder(clientsocket, address, clientsocket_data, address_data):
 
             except KeyError:
                 logger.error("command not implemented: {}".format(command))
-                clientsocket.send("command not implemented.." + "\r\n")
+                clientsocket.send(b"command not implemented..\r\n")
                 raise
 
         else:
@@ -247,7 +240,7 @@ def discover(discoversocket):
             pass
         if data == "phantom?":
             logger.info("hello phantom :P")
-            discoversocket.sendto('{} {} 4001 16001 "FAKE_CAMERA"'.format("PH16", "7115"), addr)
+            discoversocket.sendto(b'PH16 7115 4001 16001 "FAKE_CAMERA"', addr)
 
 
 def delete_takes():
@@ -268,7 +261,7 @@ def load_takes():
                 clean = " ".join(y.read().split()).replace("\\", "")
                 take_info = yaml.load(clean)
                 # use first key of take_info because we renumber the takes
-                state["fc{}".format(take_index)] = take_info[take_info.keys()[0]]
+                state["fc{}".format(take_index)] = take_info[list(take_info.keys())[0]]
             logger.info("Take {} loaded".format(take_index))
             takes += 1
 

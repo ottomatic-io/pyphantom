@@ -1,5 +1,3 @@
-from __future__ import print_function, absolute_import
-
 import shlex
 import socket
 import time
@@ -20,13 +18,13 @@ def discover(networks):
     s.bind(("", 0))
     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-    s.setblocking(0)
+    s.setblocking(False)
 
     cameras = list()
 
     for interface, ipv4 in networks.items():
         try:
-            s.sendto("phantom?", (ipv4["broadcast"], 7380))
+            s.sendto(b"phantom?", (ipv4["broadcast"], 7380))
             logger.debug("Sent discovery packet to {}".format(ipv4["broadcast"]))
         except socket.error as e:
             logger.warning("Could not send discovery packet to {}: {}".format(ipv4["broadcast"], e))
@@ -35,7 +33,7 @@ def discover(networks):
 
     while True:
         try:
-            data, addr = s.recvfrom(1024)
+            data, address = s.recvfrom(1024)
             try:
                 protocol, port, hardware_version, serial, name = shlex.split(data.rstrip("\0"))
                 name = name.strip('"')
@@ -46,7 +44,7 @@ def discover(networks):
                 serial = ""
                 name = ""
 
-            cameras.append(CameraInfo(addr[0], port, protocol, hardware_version, serial, name))
+            cameras.append(CameraInfo(address[0], port, protocol, hardware_version, serial, name))
 
         except socket.error:
             break
@@ -104,10 +102,3 @@ class Cameras(Thread):
 
     def __len__(self):
         return len(self.cameras)
-
-
-if __name__ == "__main__":
-    FORMAT = "%(asctime)s %(module)-12s %(levelname)-8s %(message)s"
-    logging.basicConfig(format=FORMAT, level=logging.INFO)
-
-    c = Cameras(daemon=False)

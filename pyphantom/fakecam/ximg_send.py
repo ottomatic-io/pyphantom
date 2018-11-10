@@ -5,19 +5,17 @@ import pcapy
 import struct
 
 DEFAULT_TIMEOUT = 3
-
 BPF_START = 0
 
 logger = logging.getLogger(__name__)
-
 frame_cache = {}
 
-max_bytes = 1504
-promiscuous = False
-read_timeout = 1  # in millisecods
-bufsize = 32  # in MB
-
-pc = pcapy.open_live("lo0", max_bytes, promiscuous, read_timeout, bufsize)
+pc = pcapy.create("lo0")
+pc.set_snaplen(1504)
+pc.set_promisc(False)
+pc.set_timeout(1)  # in millisecods
+pc.set_buffer_size(32 * 1024 * 1024)
+pc.activate()
 
 
 def send_frame(cine, count, dest, ssrc):
@@ -35,7 +33,7 @@ def send_frame(cine, count, dest, ssrc):
     to_mac = codecs.decode(dest, "hex")
     from_mac = codecs.decode(b"feedfacebeef", "hex")
     protocol = "\x88\xb7"
-    version = "\x01"  # TODO: confirm if this is what gets sent by a cinestation
+    version = "\x01"
     sequence_number = 512
     timestamp = 0  # TODO: don't we want to use this somehow?
     unused = 0
@@ -68,9 +66,3 @@ def send_frame(cine, count, dest, ssrc):
             if sequence_number > 65535:
                 sequence_number = 0
             start = "\x00"
-
-
-if __name__ == "__main__":
-    with open(BPF_START, "rb+") as s:
-        initAndBindBPFSocket(s, "lo0")
-        send_frame(s)

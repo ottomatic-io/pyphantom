@@ -1,19 +1,19 @@
-#!/usr/bin/env python
-from __future__ import print_function
-
-import logging
-import os
-import sys
-
-logger = logging.getLogger(__name__)
+#!/usr/bin/env python3
+# FIXME: Merge with PH16 fakecam
 
 import glob
+import logging
+import os
 import socket
+import sys
 import time
 from threading import Thread
+
 import yaml
 
-from fakecam_data import state, answers
+from .fakecam_data import state, answers
+
+logger = logging.getLogger(__name__)
 
 camthread = None
 
@@ -23,7 +23,7 @@ def get(keystring):
     out = state
     for key in sub:
         out = out[key]
-    if type(out) is dict:
+    if isinstance(out, dict):
         out = "{}: {}".format(key, out)
     return out
 
@@ -41,7 +41,7 @@ def threaded(fn):
 def send_frame(socket, cine, count=1):
     script_path = os.path.dirname(os.path.realpath(sys.argv[0]))
     raw_path = os.path.join(script_path, "./takes-ph7/{}.raw".format(cine))
-    with open(raw_path) as f:
+    with open(raw_path, 'rb') as f:
         logger.debug("sending {}.raw".format(cine))
         socket.sendall(f.read() * count)
 
@@ -83,8 +83,8 @@ def ferase():
 
 def responder(clientsocket, address):
     logger.info("connection from {}".format(address))
-    while 1:
-        command = clientsocket.recv(1024)
+    while True:
+        command = clientsocket.recv(1024).decode('ascii')
         answer = None
         img = ""
         if command:
@@ -121,7 +121,7 @@ def responder(clientsocket, address):
                     clean = " ".join(command.lstrip("vplay ").split()).replace("\\", "")
                     vplay = yaml.load(clean)
                     try:
-                        for key, value in vplay.iteritems():
+                        for key, value in vplay.items():
                             state["video"]["play"][key] = value
                     except:
                         logger.warning("vplay: {}".format(vplay))
@@ -157,14 +157,14 @@ def responder(clientsocket, address):
                 # uncomment to simulate slow connection
                 # import time; time.sleep(0.6)
 
-                clientsocket.send(str(answer) + "\r\n")
+                clientsocket.send(answer.encode('ascii') + b"\r\n")
 
                 if img:
                     send_frame(data_socket, img["cine"], img["cnt"])
 
             except KeyError:
                 logger.error("command not implemented: {}".format(command))
-                clientsocket.send("command not implemented.." + "\r\n")
+                clientsocket.send(b"command not implemented..\r\n")
                 raise
 
         else:
@@ -182,8 +182,7 @@ def discover(discoversocket):
             pass
         if data == "phantom?":
             logger.info("hello phantom :P")
-            # discoversocket.sendto('{} {} 4001 16001 "FAKE_CAMERA"'.format("PH16", '7115'), addr)
-            discoversocket.sendto("PH7 7115", addr)
+            discoversocket.sendto(b"PH7 7115", addr)
 
 
 def delete_takes():
@@ -205,7 +204,7 @@ def load_takes():
                 clean = " ".join(y.read().split()).replace("\\", "")
                 take_info = yaml.load(clean)
                 # use first key of take_info because we renumber the takes
-                state["fc{}".format(take_index)] = take_info[take_info.keys()[0]]
+                state["fc{}".format(take_index)] = take_info[list(take_info.keys())[0]]
             logger.info("Take {} loaded".format(take_index))
             takes += 1
 
@@ -218,7 +217,7 @@ def run():
         discoversocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         discoversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         discoversocket.bind(("", 7380))
-        # discoversocket.setblocking(0)
+        # discoversocket.setblocking(False)
 
         serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)

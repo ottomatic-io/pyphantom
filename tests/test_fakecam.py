@@ -21,6 +21,6 @@ def test_subdict_direct():
 
 def test_subdict_whole():
     assert (
-        fakecam.get(state, "subdict") == 'subdict : { integer : 3, subsubdict : { substring : "blaa" }, '
-        'string : "another string" }'
+        fakecam.get(state, "subdict")
+        == 'subdict : { string : "another string", integer : 3, subsubdict : { substring : "blaa" } }'
     )
