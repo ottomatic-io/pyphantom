@@ -9,24 +9,24 @@ logger = logging.getLogger()
 def get_mac(ip):
     if platform.system() != "Windows":
         mac_raw = (
-            subprocess.check_output("arp -n {} | cut -d ' ' -f4".format(ip, ip), shell=True).decode("utf-8").strip()
+            subprocess.check_output("arp -n {} | cut -d ' ' -f4".format(ip, ip), shell=True).strip()
         )
         mac = "".join(["{:02x}".format(int(x, 16)) for x in mac_raw.split(":")])
         return mac
     else:
-        output = subprocess.check_output(["arp", "-a", ip]).decode("utf-8")
+        output = subprocess.check_output(["arp", "-a", ip])
         return output.splitlines()[3].split()[1].replace("-", "")
 
 
 def get_interface_of_ip(ip):
     if platform.system() != "Windows":
-        output = subprocess.check_output(["/sbin/route", "-n", "get", ip]).decode('utf-8')
+        output = subprocess.check_output(["/sbin/route", "-n", "get", ip])
 
         for line in output.splitlines():
             if "interface" in line:
                 return line.split()[1]
     else:
-        output = subprocess.check_output(["pathping", "-n", "-w", "1", "-h", "1", "-q", "1", ip]).decode("utf-8")
+        output = subprocess.check_output(["pathping", "-n", "-w", "1", "-h", "1", "-q", "1", ip])
         interface_ip = output.splitlines()[3].split()[1]
         for name, config in get_networks().items():
             if config["addr"] == interface_ip:
