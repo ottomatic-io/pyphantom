@@ -1,11 +1,20 @@
-pyphantom
-=========
+# pyphantom
 
 Communicate with Vision Research Phantom® cameras with python
 
-Installation
-------------
+
+## Installation
+
+### Release Version
+
 ```
-pip install git+https://github.com/OTTOMATIC-IO/pyphantom.git
+pip install pyphantom
+```
+
+
+### Development version
+
+```
+pip install git+https://github.com/ottomatic-io/pyphantom.git
 ```
 
