@@ -185,7 +185,7 @@ def responder(clientsocket, address, clientsocket_data, address_data):
 
                 elif command.startswith("vplay"):
                     clean = " ".join(command.lstrip("vplay ").split()).replace("\\", "")
-                    vplay = yaml.load(clean)
+                    vplay = yaml.safe_load(clean)
                     try:
                         for key, value in vplay.items():
                             state["video"]["play"][key] = value
@@ -195,7 +195,7 @@ def responder(clientsocket, address, clientsocket_data, address_data):
 
                 elif command.startswith("fsave"):
                     clean = " ".join(command.lstrip("fsave ").split()).replace("\\", "")
-                    fsave = yaml.load(clean)
+                    fsave = yaml.safe_load(clean)
                     save(fsave)
                     answer = "Ok!"
 
@@ -258,7 +258,7 @@ def load_takes():
         if os.path.exists("{}/{}.raw".format(takes_path, take_index)):
             with open(yaml_file) as y:
                 clean = " ".join(y.read().split()).replace("\\", "")
-                take_info = yaml.load(clean)
+                take_info = yaml.safe_load(clean)
                 # use first key of take_info because we renumber the takes
                 state["fc{}".format(take_index)] = take_info[list(take_info.keys())[0]]
             logger.info("Take {} loaded".format(take_index))

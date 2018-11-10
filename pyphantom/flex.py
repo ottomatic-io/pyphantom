@@ -75,7 +75,7 @@ def parse_response(response):
         clean = "X :" + clean
 
         try:
-            return yaml.load(clean)["X"]
+            return yaml.safe_load(clean)["X"]
         except yaml.parser.ParserError:
             raise
 

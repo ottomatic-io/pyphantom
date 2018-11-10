@@ -101,7 +101,7 @@ def responder(clientsocket, address):
 
                 elif command.startswith("img"):
                     clean = " ".join(command.lstrip("img ").split()).replace("\\", "")
-                    img = yaml.load(clean)
+                    img = yaml.safe_load(clean)
                     answer = "Ok! {{ cine: {cine}, res: {res}, fmt: P10 }}".format(
                         cine=img["cine"], res=state["fc{}".format(img["cine"])]["res"]
                     )
@@ -119,7 +119,7 @@ def responder(clientsocket, address):
 
                 elif command.startswith("vplay"):
                     clean = " ".join(command.lstrip("vplay ").split()).replace("\\", "")
-                    vplay = yaml.load(clean)
+                    vplay = yaml.safe_load(clean)
                     try:
                         for key, value in vplay.items():
                             state["video"]["play"][key] = value
@@ -129,7 +129,7 @@ def responder(clientsocket, address):
 
                 elif command.startswith("fsave"):
                     clean = " ".join(command.lstrip("fsave ").split()).replace("\\", "")
-                    fsave = yaml.load(clean)
+                    fsave = yaml.safe_load(clean)
                     save(fsave)
                     answer = "Ok!"
 
@@ -138,7 +138,7 @@ def responder(clientsocket, address):
 
                 elif command.startswith("startdata"):
                     clean = " ".join(command.lstrip("startdata ").split()).replace("\\", "")
-                    startdata = yaml.load(clean)
+                    startdata = yaml.safe_load(clean)
                     print(startdata)
                     data_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                     data_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -200,7 +200,7 @@ def load_takes():
         if os.path.exists("{}/takes-ph7/{}.raw".format(script_path, take_index)):
             with open(yaml_file) as y:
                 clean = " ".join(y.read().split()).replace("\\", "")
-                take_info = yaml.load(clean)
+                take_info = yaml.safe_load(clean)
                 # use first key of take_info because we renumber the takes
                 state["fc{}".format(take_index)] = take_info[list(take_info.keys())[0]]
             logger.info("Take {} loaded".format(take_index))
