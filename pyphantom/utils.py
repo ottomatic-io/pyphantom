@@ -6,6 +6,7 @@ from multiprocessing import Process
 from threading import Thread, current_thread
 
 import psutil
+import timeout_decorator
 
 logger = logging.getLogger()
 
@@ -44,13 +45,18 @@ def check_pid(pid):
         return True
 
 
+@timeout_decorator.timeout(5, use_signals=False)
 def files_in_use(path, ignore=None):
+    if ignore is None:
+        ignore = []
+
     processes = {}
 
     try:
-        _ = subprocess.check_output("lsof -F cn0 +c 0 +D {}".format(path), shell=True)
+        logger.info("Checking open files of {}".format(path))
+        subprocess.call(["/usr/sbin/lsof", "-l", "-P", "-n", "-F", "cn0", "+c", "0", "+D", path])
     except subprocess.CalledProcessError as e:
-        for line in e.output.splitlines():
+        for line in e.output.decode("utf-8").splitlines():
             fields = {f[:1]: f[1:] for f in line.split(b"\0") if f.rstrip(b"\n")}
             if "p" in fields:
                 process_name = fields["c"]

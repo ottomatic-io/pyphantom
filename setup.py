@@ -6,7 +6,7 @@ setup(
     url="http://gitlab.com/ottomatic/pyphantom",
     author="Ben Hagen",
     author_email="ben@ottomatic.io",
-    install_requires=["psutil", "PyYAML", "netifaces", "cached_property", "click", "colorama"],
+    install_requires=["psutil", "PyYAML", "netifaces", "cached_property", "click", "colorama", "timeout-decorator"],
     packages=find_packages(),
     scripts=[],
     entry_points={"console_scripts": ["pfs_cam = pyphantom.cli.pfs_cam:cli"]},
