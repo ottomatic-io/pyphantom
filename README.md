@@ -1,7 +1,7 @@
 pyphantom
 =========
 
-Communicate with Vision Research Phantom® cameras with python.
+Communicate with Vision Research Phantom® cameras with python
 
 Installation
 ------------
