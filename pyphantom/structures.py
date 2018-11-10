@@ -1,19 +1,19 @@
 class PhantomStructures(object):
-    path = ''
+    path = ""
 
-    def __init__(self, camera, path=''):
-        super(PhantomStructures, self).__setattr__('camera', camera)
+    def __init__(self, camera, path=""):
+        super(PhantomStructures, self).__setattr__("camera", camera)
         if path:
-            super(PhantomStructures, self).__setattr__('path', self.path + path)
+            super(PhantomStructures, self).__setattr__("path", self.path + path)
 
     def __getattr__(self, item):
         if self.path:
-            return PhantomStructures(self.camera, self.path + '.' + item)
+            return PhantomStructures(self.camera, self.path + "." + item)
         else:
             return PhantomStructures(self.camera, item)
 
     def __setattr__(self, key, value):
-        cmd = 'set {}.{} {}'.format(self.path, key, value)
+        cmd = "set {}.{} {}".format(self.path, key, value)
         self.camera.ask(cmd)
 
     def __dir__(self):
@@ -23,7 +23,7 @@ class PhantomStructures(object):
             return dir(self._get())
 
     def _get(self):
-        cmd = 'get {}'.format(self.path if self.path else '*')
+        cmd = "get {}".format(self.path if self.path else "*")
         return self.camera.ask(cmd)
 
     def __int__(self):

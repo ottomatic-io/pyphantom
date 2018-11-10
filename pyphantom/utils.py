@@ -48,15 +48,15 @@ def files_in_use(path, ignore=None):
     processes = {}
 
     try:
-        _ = subprocess.check_output('lsof -F cn0 +c 0 +D {}'.format(path), shell=True)
+        _ = subprocess.check_output("lsof -F cn0 +c 0 +D {}".format(path), shell=True)
     except subprocess.CalledProcessError as e:
         for line in e.output.splitlines():
-            fields = {f[:1]: f[1:] for f in line.split(b'\0') if f.rstrip(b'\n')}
-            if 'p' in fields:
-                process_name = fields['c']
+            fields = {f[:1]: f[1:] for f in line.split(b"\0") if f.rstrip(b"\n")}
+            if "p" in fields:
+                process_name = fields["c"]
                 processes[process_name] = set()
-            if 'n' in fields:
-                processes[process_name].add(os.path.basename(fields['n']))
+            if "n" in fields:
+                processes[process_name].add(os.path.basename(fields["n"]))
 
     for i in ignore:
         processes.pop(i, None)

@@ -28,10 +28,10 @@ def info():
     with Phantom(c.ip, c.port, c.protocol) as cam:
         cam.connect()
         cam_info = cam.structures.info
-        click.secho('Connected to a {} at {}'.format(cam_info.model, c.ip), fg='green')
+        click.secho("Connected to a {} at {}".format(cam_info.model, c.ip), fg="green")
         for key in dir(cam_info):
-            click.echo(key + ': ', nl=False)
-            click.secho(str(getattr(cam_info, key)), bold=False, fg='yellow')
+            click.echo(key + ": ", nl=False)
+            click.secho(str(getattr(cam_info, key)), bold=False, fg="yellow")
 
 
 if __name__ == "__main__":
