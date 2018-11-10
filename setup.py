@@ -16,7 +16,7 @@ setup(
     scripts=[],
     setup_requires=["pytest-runner", "setuptools_scm"],
     tests_require=["pytest", "tempdir", "pcapy"],
-    url="http://gitlab.com/ottomatic-io/pyphantom",
+    url="https://github.com/ottomatic-io/pyphantom",
     use_scm_version=True,
     classifiers=[
         "Programming Language :: Python :: 3 :: Only",
