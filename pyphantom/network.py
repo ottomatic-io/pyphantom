@@ -7,9 +7,13 @@ logger = logging.getLogger()
 
 
 def get_mac(ip):
-    mac_raw = subprocess.check_output("arp -n {} | cut -d ' ' -f4".format(ip, ip), shell=True).strip()
-    mac = ''.join(['{:02x}'.format(int(x, 16)) for x in mac_raw.split(':')])
-    return mac
+    if platform.system() != 'Windows':
+        mac_raw = subprocess.check_output("arp -n {} | cut -d ' ' -f4".format(ip, ip), shell=True).strip()
+        mac = ''.join(['{:02x}'.format(int(x, 16)) for x in mac_raw.split(':')])
+        return mac
+    else:
+        output = subprocess.check_output(["arp", "-a", ip])
+        return output.splitlines()[3].split()[1].replace('-', '')
 
 
 def get_interface_of_ip(ip):
