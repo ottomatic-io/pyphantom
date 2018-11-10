@@ -173,20 +173,18 @@ def responder(clientsocket, address):
 
 
 def discover(discoversocket):
-    myip = socket.gethostbyname(socket.gethostname())
     while True:
-        data = ""
         try:
-            data, addr = discoversocket.recvfrom(1024)
+            data, addr = discoversocket.recvfrom(1024).decode('ascii')
+            if data == b"phantom?":
+                logger.info("hello phantom :P")
+                discoversocket.sendto(b"PH7 7115", addr)
         except socket.error:
             pass
-        if data == "phantom?":
-            logger.info("hello phantom :P")
-            discoversocket.sendto(b"PH7 7115", addr)
 
 
 def delete_takes():
-    for key in state.keys():
+    for key in list(state.keys()):
         if key.startswith("fc"):
             del state[key]
 
@@ -243,7 +241,6 @@ def run():
 
 
 load_takes()
-
 
 if __name__ == "__main__":
     FORMAT = "%(asctime)s %(name)-12s %(levelname)-8s %(message)s"

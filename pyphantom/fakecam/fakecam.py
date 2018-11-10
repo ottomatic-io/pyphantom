@@ -10,8 +10,8 @@ from threading import Thread
 
 import yaml
 
-from . import ximg_send
-from .fakecam_data import state, answers
+from pyphantom.fakecam import ximg_send
+from pyphantom.fakecam.fakecam_data import state, answers
 
 logger = logging.getLogger(__name__)
 FORMAT = "%(asctime)s %(name)-12s %(levelname)-8s %(message)s"
@@ -95,7 +95,7 @@ def get(state, keystring):
 @threaded
 def send_frame(socket, cine, count=1):
     raw_path = os.path.join(takes_path, "./{}.raw".format(cine))
-    with open(raw_path, 'rb') as f:
+    with open(raw_path, "rb") as f:
         logger.debug("sending {}.raw".format(cine))
         socket.sendall(f.read() * count)
 
@@ -140,7 +140,7 @@ def responder(clientsocket, address, clientsocket_data, address_data):
 
     logger.info("connection from {}".format(address))
     while True:
-        command = clientsocket.recv(1024).decode('ascii')
+        command = clientsocket.recv(1024).decode("ascii")
         answer = None
         img = ""
         ximg = ""
@@ -214,7 +214,7 @@ def responder(clientsocket, address, clientsocket_data, address_data):
                 # uncomment to simulate slow connection
                 # import time; time.sleep(0.6)
 
-                clientsocket.send(answer.encode('ascii') + b"\r\n")
+                clientsocket.send(answer.encode("ascii") + b"\r\n")
 
                 if ximg:
                     ximg_send.send_frame(int(ximg["cine"]), int(ximg["cnt"]), ximg["dest"], ximg["ssrc"])
@@ -233,18 +233,17 @@ def responder(clientsocket, address, clientsocket_data, address_data):
 
 def discover(discoversocket):
     while True:
-        data = ""
         try:
             data, addr = discoversocket.recvfrom(1024)
+            if data == b"phantom?":
+                logger.info("hello phantom :P")
+                discoversocket.sendto(b'PH16 7115 4001 16001 "FAKE_CAMERA"', addr)
         except socket.error:
             pass
-        if data == "phantom?":
-            logger.info("hello phantom :P")
-            discoversocket.sendto(b'PH16 7115 4001 16001 "FAKE_CAMERA"', addr)
 
 
 def delete_takes():
-    for key in state.keys():
+    for key in list(state.keys()):
         if key.startswith("fc"):
             del state[key]
 

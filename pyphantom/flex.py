@@ -329,7 +329,7 @@ class Phantom(object):
         total_data = []
 
         while True:
-            data = the_socket.recv(8192).decode('ascii')
+            data = the_socket.recv(8192).decode("ascii")
             if not data:
                 logger.warning("No data..")
                 break
@@ -346,7 +346,7 @@ class Phantom(object):
         try:
             with self.lock:
                 # logger.debug('Command: {}'.format(command))
-                self.socket.sendall(command.encode('ascii') + b"\n")
+                self.socket.sendall(command.encode("ascii") + b"\n")
                 response = self.recv_end(self.socket)
 
                 self.alive = True
@@ -387,7 +387,7 @@ class Phantom(object):
 
     def ask_raw(self, command: str):
         with self.lock:
-            self.socket.sendall(command.encode('ascii') + b"\n")
+            self.socket.sendall(command.encode("ascii") + b"\n")
             response = self.recv_end(self.socket)
 
         return response

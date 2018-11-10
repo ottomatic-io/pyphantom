@@ -35,7 +35,7 @@ def discover(networks):
         try:
             data, address = s.recvfrom(1024)
             try:
-                protocol, port, hardware_version, serial, name = shlex.split(data.rstrip("\0"))
+                protocol, port, hardware_version, serial, name = shlex.split(data.decode('ascii').rstrip("\0"))
                 name = name.strip('"')
             except ValueError:
                 # PH7
