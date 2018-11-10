@@ -48,7 +48,7 @@ def files_in_use(path, ignore=None):
     processes = {}
 
     try:
-        output = subprocess.check_output('lsof -F cn0 +c 0 +D {}'.format(path), shell=True)
+        _ = subprocess.check_output('lsof -F cn0 +c 0 +D {}'.format(path), shell=True)
     except subprocess.CalledProcessError as e:
         for line in e.output.splitlines():
             fields = {f[:1]: f[1:] for f in line.split(b'\0') if f.rstrip(b'\n')}
