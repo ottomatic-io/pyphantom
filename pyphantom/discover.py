@@ -22,7 +22,7 @@ def discover(networks):
 
     cameras = list()
 
-    for interface, ipv4 in networks.items():
+    for _, ipv4 in networks.items():
         try:
             s.sendto(b"phantom?", (ipv4["broadcast"], 7380))
             logger.debug("Sent discovery packet to {}".format(ipv4["broadcast"]))
