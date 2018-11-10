@@ -53,7 +53,7 @@ def phantom_format(key, value, stream=None):
     if stream is None:
         stream = StringIO()
     stream.write("{} : ".format(key))
-    if type(value) in (int, float):
+    if isinstance(value, (int, float)):
         stream.write(str(value))
     elif isinstance(value, str):
         stream.write('"{}"'.format(value))
