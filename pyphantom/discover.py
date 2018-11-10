@@ -39,7 +39,7 @@ def discover(networks):
                 name = name.strip('"')
             except ValueError:
                 # PH7
-                protocol, port = shlex.split(data)
+                protocol, port = shlex.split(data.decode('ascii'))
                 hardware_version = ""
                 serial = ""
                 name = ""
