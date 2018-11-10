@@ -290,7 +290,7 @@ class Phantom(object):
     def toggle(self):
         if self.alive:
             commands = ["rec 1", "trig"]
-            self.ask(commands[self.recstatus])
+            self.ask(commands[int(self.recstatus)])
 
     def get_takeinfo(self, take, keys=None):
         keys = keys or ["firstfr", "lastfr", "in", "out", "frcount", "state"]
