@@ -8,9 +8,9 @@ from threading import current_thread
 import yaml
 from cached_property import cached_property_with_ttl, cached_property
 
+from pyphantom.network import get_mac, get_interface_of_ip, get_mac_of_interface
 from pyphantom.structures import PhantomStructures
 from pyphantom.utils import threaded
-from pyphantom.network import get_mac, get_interface_of_ip, get_mac_of_interface, get_networks
 
 logger = logging.getLogger()
 
