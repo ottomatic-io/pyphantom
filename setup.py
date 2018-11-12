@@ -8,7 +8,7 @@ setup(
     author_email="ben@ottomatic.io",
     description="Phantom® highspeed camera control",
     entry_points={"console_scripts": ["pfs_cam = pyphantom.cli.pfs_cam:cli"]},
-    install_requires=["psutil", "PyYAML", "netifaces", "cached_property", "click", "colorama", "timeout-decorator"],
+    install_requires=["psutil", "PyYAML", "netifaces", "cached_property", "click", "colorama"],
     long_description=long_description,
     long_description_content_type="text/markdown",
     name="pyphantom",
