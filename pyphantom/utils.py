@@ -1,12 +1,10 @@
 import logging
 import os
 import platform
-import subprocess
 from multiprocessing import Process
 from threading import Thread, current_thread
 
 import psutil
-import timeout_decorator
 
 logger = logging.getLogger()
 
@@ -43,31 +41,6 @@ def check_pid(pid):
         return False
     else:
         return True
-
-
-@timeout_decorator.timeout(5, use_signals=False)
-def files_in_use(path, ignore=None):
-    if ignore is None:
-        ignore = []
-
-    processes = {}
-
-    try:
-        logger.info("Checking open files of {}".format(path))
-        subprocess.call(["/usr/sbin/lsof", "-l", "-P", "-n", "-F", "cn0", "+c", "0", "+D", path])
-    except subprocess.CalledProcessError as e:
-        for line in e.output.decode("utf-8").splitlines():
-            fields = {f[:1]: f[1:] for f in line.split(b"\0") if f.rstrip(b"\n")}
-            if "p" in fields:
-                process_name = fields["c"]
-                processes[process_name] = set()
-            if "n" in fields:
-                processes[process_name].add(os.path.basename(fields["n"]))
-
-    for i in ignore:
-        processes.pop(i, None)
-
-    return processes
 
 
 def get_sys_info():

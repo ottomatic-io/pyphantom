@@ -94,12 +94,6 @@
                 "sha256:e170a9e6fcfd19021dd29845af83bb79236068bf5fd4df3327c1be18182b2531"
             ],
             "version": "==3.13"
-        },
-        "timeout-decorator": {
-            "hashes": [
-                "sha256:e49d214b17a096ca5162865ccb79f516840e5ba21b394f531f1f1d50e2e293ad"
-            ],
-            "version": "==0.4.0"
         }
     },
     "develop": {
