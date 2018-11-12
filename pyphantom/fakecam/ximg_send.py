@@ -27,13 +27,13 @@ def send_frame(cine, count, dest, ssrc):
     try:
         frame_bytes = frame_cache[raw_path]
     except KeyError:
-        frame_bytes = open(raw_path).read()
+        frame_bytes = open(raw_path, "rb").read()
         frame_cache[raw_path] = frame_bytes
 
-    to_mac = codecs.decode(dest, "hex")
-    from_mac = codecs.decode(b"feedfacebeef", "hex")
-    protocol = "\x88\xb7"
-    version = "\x01"
+    to_mac = bytes.fromhex(dest)
+    from_mac = bytes.fromhex("feedfacebeef")
+    protocol = b"\x88\xb7"
+    version = b"\x01"
     sequence_number = 512
     timestamp = 0  # TODO: don't we want to use this somehow?
     unused = 0
@@ -41,7 +41,7 @@ def send_frame(cine, count, dest, ssrc):
 
     for _ in range(count):
         view = memoryview(frame_bytes)
-        start = "\x80"
+        start = b"\x80"
 
         while len(view):
             header = struct.pack(
@@ -65,4 +65,4 @@ def send_frame(cine, count, dest, ssrc):
             sequence_number += 1
             if sequence_number > 65535:
                 sequence_number = 0
-            start = "\x00"
+            start = b"\x00"
