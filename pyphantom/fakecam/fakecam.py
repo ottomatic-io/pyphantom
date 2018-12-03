@@ -164,7 +164,7 @@ def responder(clientsocket, address, clientsocket_data, address_data):
                 elif command.startswith("img"):
                     img = parse_simple(command)
                     answer = "Ok! {{ cine: {cine}, res: {res}," "fmt: P10 }}".format(
-                        cine=img["cine"], res=state["fc{}".format(img["cine"])]["res"]
+                        cine=img["cine"], res=state[f"fc{img['cine']}"]["res"]
                     )
 
                 elif command.startswith("ximg"):
