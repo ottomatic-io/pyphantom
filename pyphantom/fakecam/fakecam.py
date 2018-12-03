@@ -96,6 +96,8 @@ def get(state, keystring):
 
 @threaded
 def send_frame(socket, cine, count=1):
+    if cine == -1:
+        cine = 0
     raw_path = os.path.join(takes_path, "./{}.raw".format(cine))
     with open(raw_path, "rb") as f:
         logger.debug("sending {}.raw".format(cine))
@@ -267,6 +269,7 @@ def load_takes():
             takes += 1
 
     state["mag"]["takes"] = takes
+    state["fc-1"] = state["fc0"]
 
 
 @threaded
