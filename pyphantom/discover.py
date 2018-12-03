@@ -77,7 +77,7 @@ class Cameras(Thread):
             cameras = discover(self.networks)
             logger.debug("Discovered %d cameras", len(cameras))
 
-            for camera_info in cameras:
+            for camera_info in cameras.copy():
                 if camera_info not in self.cameras:
                     logger.info("Connecting to %s", camera_info)
                     camera = Phantom(camera_info.ip, camera_info.port, camera_info.protocol)
@@ -87,7 +87,7 @@ class Cameras(Thread):
                     except Exception as e:
                         logger.warning(e)
 
-            for camera_info, camera in self.cameras.items():
+            for camera_info, camera in self.cameras.copy().items():
                 try:
                     _ = camera.mag_state
                     time.sleep(0.4)
