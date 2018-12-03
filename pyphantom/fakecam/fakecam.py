@@ -176,8 +176,11 @@ def responder(clientsocket, address, clientsocket_data, address_data):
 
                     ssrc += 1
 
+                elif command.startswith("setrtc"):
+                    answer = "Ok!"
+
                 elif command.startswith("set"):
-                    option, value = command.strip().lstrip("set ").split(": ")
+                    option, value = command.strip().lstrip("set ").split()
                     split = option.split(".")
                     if len(split) == 2:
                         key, subkey = split
