@@ -144,7 +144,7 @@ def responder(clientsocket, address, clientsocket_data, address_data):
 
     logger.info("connection from {}".format(address))
     while True:
-        command = clientsocket.recv(1024).decode("ascii")
+        command = clientsocket.recv(1024).decode("ascii").strip()
         answer = None
         img = ""
         ximg = ""
