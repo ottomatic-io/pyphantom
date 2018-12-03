@@ -13,6 +13,7 @@ setup(
     long_description_content_type="text/markdown",
     name="pyphantom",
     packages=find_packages(),
+    include_package_data=True,
     scripts=[],
     setup_requires=["pytest-runner", "setuptools_scm"],
     tests_require=["pytest", "tempdir", "pcapy"],
