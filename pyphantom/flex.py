@@ -96,18 +96,18 @@ def parse_response(response):
 
 
 class Phantom(object):
-    def __init__(self, ip, port=7115, protocol="PH16"):
-        self.ip = ip
-        self.port = int(port)
-        self.protocol = protocol
+    def __init__(self, ip: str, port: int = 7115, protocol: str = "PH16"):
+        self.ip: str = ip
+        self.port: int = int(port)
+        self.protocol: str = protocol
         self.interface = None
         self.interface_mac = None
 
         self.connected = False
         self.alive = False
 
-        self.socket = None
-        self.socket_data = None
+        self.socket: socket.socket = None
+        self.socket_data: socket.socket = None
 
         self.lock = Lock()
         self.connect_lock = Lock()
@@ -300,12 +300,13 @@ class Phantom(object):
 
         return takeinfo
 
-    def recvall(self, n):
-        data = ""
-        while len(data) < n:
-            packet = self.socket_data.recv(n - len(data))
+    def recvall(self, total_length: int) -> bytes:
+        data = b""
+        while len(data) < total_length:
+            packet = self.socket_data.recv(total_length - len(data))
             if not packet:
-                return None
+                # TODO: Raise a better exception
+                raise ValueError
             data += packet
         return data
 
