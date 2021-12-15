@@ -323,14 +323,14 @@ class Phantom(object):
         return data
 
     @staticmethod
-    def recv_end(the_socket):
+    def recv_end(the_socket: socket.socket):
         end = "\r\n"
         escaped_crlf = "\\\r\n"
 
         total_data = []
 
         while True:
-            data = the_socket.recv(8192).decode("ascii")
+            data = the_socket.recv(8192).decode("ascii", errors="ignore")
             if not data:
                 logger.warning("No data..")
                 break
