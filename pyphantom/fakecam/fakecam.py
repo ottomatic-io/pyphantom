@@ -181,6 +181,11 @@ def responder(clientsocket, address, clientsocket_data, address_data):
 
                 elif command.startswith("set"):
                     option, value = command.strip().lstrip("set ").split()
+                    try:
+                        value = int(value)
+                    except ValueError:
+                        pass
+
                     split = option.split(".")
                     if len(split) == 2:
                         key, subkey = split
@@ -195,7 +200,7 @@ def responder(clientsocket, address, clientsocket_data, address_data):
                     vplay = yaml.safe_load(clean)
                     try:
                         for key, value in vplay.items():
-                            state["video"]["play"][key] = value
+                            state["video"]["play"][key] = int(value)
                     except:
                         logger.warning("vplay: {}".format(vplay))
                     answer = "Ok!"
