@@ -163,13 +163,13 @@ def responder(clientsocket, address, clientsocket_data, address_data):
 
                 elif command.startswith("img"):
                     img = parse_simple(command)
-                    answer = "Ok! {{ cine: {cine}, res: {res}," "fmt: P10 }}".format(
+                    answer = "Ok! {{ cine: {cine}, res: {res}, fmt: P10 }}".format(
                         cine=img["cine"], res=state[f"fc{img['cine']}"]["res"]
                     )
 
                 elif command.startswith("ximg"):
                     ximg = parse_simple(command)
-                    answer = "Ok! {{ cine: {cine}, res: {res}, " "fmt: P10, ssrc: {ssrc} }}".format(
+                    answer = "Ok! {{ cine: {cine}, res: {res}, fmt: P10, ssrc: {ssrc} }}".format(
                         cine=ximg["cine"], res=state["fc{}".format(ximg["cine"])]["res"], ssrc=ssrc
                     )
                     ximg["ssrc"] = ssrc
