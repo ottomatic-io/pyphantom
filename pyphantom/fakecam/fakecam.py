@@ -249,7 +249,7 @@ def discover(discoversocket):
             data, addr = discoversocket.recvfrom(1024)
             if data == b"phantom?":
                 logger.info("hello phantom :P")
-                discoversocket.sendto(b'PH16 7115 4001 16001 "FAKE_CAMERA"', addr)
+                discoversocket.sendto(b'PH16 7115 4001 16001 "FAKE CAMERA"\0', addr)
         except socket.error:
             pass
 
