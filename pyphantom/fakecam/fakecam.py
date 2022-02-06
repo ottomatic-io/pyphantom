@@ -5,6 +5,7 @@ import os
 import socket
 import sys
 import time
+from copy import deepcopy
 from io import StringIO
 from threading import Thread
 
@@ -277,7 +278,9 @@ def load_takes():
             takes += 1
 
     state["mag"]["takes"] = takes
-    state["fc-1"] = state["fc0"]
+    state["fc-1"] = deepcopy(state["fc0"])
+    state["c0"] = deepcopy(state["fc0"])
+    state["c1"] = deepcopy(state["fc0"])
 
 
 @threaded
