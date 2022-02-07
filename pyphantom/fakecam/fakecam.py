@@ -152,10 +152,10 @@ def responder(clientsocket, address, clientsocket_data, address_data):
         if command:
             logger.debug("got command: {}".format(command))
             try:
-                if command == "rec 1\n":
+                if command == "rec 1":
                     state["c1"]["state"] = ["WTR"]
 
-                elif command == "trig\n":
+                elif command == "trig":
                     state["c1"]["state"] = ["RDY"]
 
                 elif command.startswith("get"):
