@@ -201,8 +201,12 @@ def responder(clientsocket, address, clientsocket_data, address_data):
                     vplay = yaml.safe_load(clean)
                     try:
                         for key, value in vplay.items():
-                            state["video"]["play"][key] = int(value)
-                    except:
+                            try:
+                                state["video"]["play"][key] = int(value)
+                            except ValueError:
+                                state["video"]["play"][key] = value
+                    except Exception as e:
+                        logger.warning(e)
                         logger.warning("vplay: {}".format(vplay))
                     answer = "Ok!"
 
@@ -284,8 +288,20 @@ def load_takes():
 
 
 @threaded
+def start_playback():
+    while True:
+        if state["video"]["play"]["step"] != 0:
+            state["video"]["play"]["fn"] += 1
+            if state["video"]["play"]["fn"] > state["video"]["play"]["out"]:
+                state["video"]["play"]["fn"] = state["video"]["play"]["in"]
+            time.sleep(1/25)
+
+
+@threaded
 def run():
     logger.info("Starting FakeCam")
+
+    start_playback()
 
     try:
         discoversocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
