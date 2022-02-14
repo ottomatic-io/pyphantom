@@ -7,7 +7,7 @@ import sys
 import time
 from copy import deepcopy
 from io import StringIO
-from threading import Thread
+from threading import Thread, Lock
 
 import yaml
 
@@ -24,6 +24,8 @@ takes_path = os.path.join(os.path.dirname(os.path.realpath(sys.argv[0])), "takes
 
 if not os.path.isdir(takes_path):
     takes_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "takes")
+
+data_lock = Lock()
 
 
 def threaded(fn):
@@ -97,12 +99,15 @@ def get(state, keystring):
 
 @threaded
 def send_frame(socket, cine, count=1):
-    if cine == -1:
-        cine = 0
-    raw_path = os.path.join(takes_path, "./{}.raw".format(cine))
-    with open(raw_path, "rb") as f:
-        logger.debug("sending {}.raw".format(cine))
-        socket.sendall(f.read() * count)
+    with data_lock:
+        if cine == -1:
+            cine = 0
+        raw_path = os.path.join(takes_path, f"./{cine}.raw")
+        with open(raw_path, "rb") as f:
+            logger.info(f"sending {cine}.raw")
+            logger.info(f"with size {os.path.getsize(raw_path)}")
+            socket.sendall(f.read() * count)
+        logger.info(f"sent {cine}.raw")
 
 
 @threaded
@@ -164,14 +169,19 @@ def responder(clientsocket, address, clientsocket_data, address_data):
 
                 elif command.startswith("img"):
                     img = parse_simple(command)
-                    answer = "Ok! {{ cine: {cine}, res: {res}, fmt: P10 }}".format(
-                        cine=img["cine"], res=state[f"fc{img['cine']}"]["res"]
+                    answer = "Ok! {{ cine: {cine}, res: {res}, fmt: {fmt} }}".format(
+                        cine=img["cine"],
+                        res=state[f"fc{img['cine']}"]["res"],
+                        fmt=state[f"fc{img['cine']}"]["format"],
                     )
 
                 elif command.startswith("ximg"):
                     ximg = parse_simple(command)
-                    answer = "Ok! {{ cine: {cine}, res: {res}, fmt: P10, ssrc: {ssrc} }}".format(
-                        cine=ximg["cine"], res=state["fc{}".format(ximg["cine"])]["res"], ssrc=ssrc
+                    answer = "Ok! {{ cine: {cine}, res: {res}, fmt: {fmt}}, ssrc: {ssrc} }}".format(
+                        cine=ximg["cine"],
+                        res=state["fc{}".format(ximg["cine"])]["res"],
+                        fmt=state[f"fc{img['cine']}"]["format"],
+                        ssrc=ssrc,
                     )
                     ximg["ssrc"] = ssrc
 
@@ -253,7 +263,7 @@ def discover(discoversocket):
         try:
             data, addr = discoversocket.recvfrom(1024)
             if data == b"phantom?":
-                logger.info("hello phantom :P")
+                logger.debug("hello phantom :P")
                 discoversocket.sendto(b'PH16 7115 4001 16001 "FAKE CAMERA"\0', addr)
         except socket.error:
             pass
@@ -284,7 +294,7 @@ def load_takes():
     state["mag"]["takes"] = takes
     state["fc-1"] = deepcopy(state["fc0"])
     state["c0"] = deepcopy(state["fc0"])
-    state["c1"] = deepcopy(state["fc0"])
+    state["c1"] = deepcopy(state["fc1"])
 
 
 @threaded
@@ -294,7 +304,7 @@ def start_playback():
             state["video"]["play"]["fn"] += 1
             if state["video"]["play"]["fn"] > state["video"]["play"]["out"]:
                 state["video"]["play"]["fn"] = state["video"]["play"]["in"]
-            time.sleep(1/25)
+        time.sleep(1 / 25)
 
 
 @threaded
