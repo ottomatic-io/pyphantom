@@ -1,5 +1,6 @@
 import errno
 import logging
+import re
 import socket
 import time
 from multiprocessing import Lock
@@ -33,6 +34,24 @@ class ConnectionError(Exception):
 
 class FrameOutsideRangeError(Exception):
     pass
+
+
+class FlexLoader(yaml.SafeLoader):
+    """YAML loader for Phantom Flex wire format.
+
+    PyYAML's ``SafeLoader`` leaves **integer-mantissa scientific notation** (e.g. ``-2e-06``,
+    no ``.`` before ``e``) as plain strings; we resolve those as floats.
+    """
+
+    pass
+
+
+# Integer-mantissa scientific notation (e.g. -2e-06 — PyYAML leaves it as str).
+FlexLoader.add_implicit_resolver(
+    "tag:yaml.org,2002:float",
+    re.compile(r"^[-+]?\d+[eE][-+]?\d+$"),
+    list("+-0123456789"),
+)
 
 
 def parse_simple(response):
@@ -75,7 +94,7 @@ def parse_response(response):
         clean = "X :" + clean
 
         try:
-            return yaml.safe_load(clean)["X"]
+            return yaml.load(clean, Loader=FlexLoader)["X"]
         except yaml.parser.ParserError:
             raise
 

@@ -1,3 +1,6 @@
+import math
+import os
+
 import pytest
 
 from pyphantom import flex
@@ -42,3 +45,27 @@ def test_dict(cam):
     assert str(cam.structures.defc) == str(
         {"rate": 400, "res": "4096x2304", "exp": 1250000, "meta": {"crop": 0, "resize": 0, "ow": 0, "oh": 0}}
     )
+
+
+def test_parse_response_scientific_without_dot():
+    """Multi-bracket Flex replies use yaml.load; -2e-06 must be float (not left as str by PyYAML)."""
+    r = flex.parse_response(
+        "Ok! fc0 : { adj : { rgamma : -2e-06, bgamma : -2e-06 } }"
+    )
+    assert isinstance(r["adj"]["rgamma"], float)
+    assert isinstance(r["adj"]["bgamma"], float)
+    assert math.isclose(r["adj"]["rgamma"], -2e-06, rel_tol=1e-9)
+    assert math.isclose(r["adj"]["bgamma"], -2e-06, rel_tol=1e-9)
+
+
+def test_parse_response_fc0_fixture():
+    fixture_path = os.path.join(os.path.dirname(__file__), "fixtures", "fc0_flex_response.txt")
+    with open(fixture_path, encoding="utf-8") as f:
+        body = f.read()
+    r = flex.parse_response("Ok! " + body)
+    assert isinstance(r, dict)
+    assert r["adj"]["gamma"] == 2.2
+    assert isinstance(r["adj"]["rgamma"], float)
+    assert isinstance(r["adj"]["bgamma"], float)
+    assert math.isclose(r["adj"]["rgamma"], -2e-06, rel_tol=1e-9)
+    assert math.isclose(r["adj"]["bgamma"], -2e-06, rel_tol=1e-9)

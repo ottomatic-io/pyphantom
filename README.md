@@ -8,7 +8,6 @@
 
 Communicate with Vision Research Phantom® cameras with python
 
-
 ## Installation
 
 ### Release Version
