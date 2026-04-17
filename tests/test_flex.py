@@ -4,6 +4,7 @@ import os
 import pytest
 
 from pyphantom import flex
+from pyphantom.fakecam import state as fakecam_state
 
 
 @pytest.fixture(scope="module")
@@ -19,10 +20,17 @@ def cam(request):
     return c
 
 
-# FIXME: Find a nicer way to test structures than calling `str()` on them
 def test_flag(cam):
-    assert cam.ask("get c1.state") == ["RDY"]
-    assert str(cam.structures.c1.state) == str(["RDY"])
+    # Raw YAML can represent empty enum leaves as None; Flex round-trip uses "".
+    def _empty_str_if_none(x):
+        if isinstance(x, dict):
+            return {k: _empty_str_if_none(v) for k, v in x.items()}
+        return "" if x is None else x
+
+    expected = _empty_str_if_none(fakecam_state["c1"]["state"])
+    got = cam.ask("get c1.state")
+    assert got == expected
+    assert str(cam.structures.c1.state) == str(got)
 
 
 def test_simple(cam):
@@ -36,15 +44,9 @@ def test_simple_with_colon(cam):
 
 
 def test_dict(cam):
-    assert cam.ask("get defc") == {
-        "exp": 1250000,
-        "meta": {"crop": 0, "oh": 0, "ow": 0, "resize": 0},
-        "rate": 400,
-        "res": "4096x2304",
-    }
-    assert str(cam.structures.defc) == str(
-        {"rate": 400, "res": "4096x2304", "exp": 1250000, "meta": {"crop": 0, "resize": 0, "ow": 0, "oh": 0}}
-    )
+    expected = fakecam_state["defc"]
+    assert cam.ask("get defc") == expected
+    assert str(cam.structures.defc) == str(expected)
 
 
 def test_parse_response_scientific_without_dot():
