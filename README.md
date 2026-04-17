@@ -8,6 +8,7 @@
 
 Communicate with Vision Research Phantom® cameras with python
 
+Flex multi-bracket responses are parsed with a ``FlexLoader`` (YAML 1.2 Core) so values such as ``-2e-06`` resolve as floats, matching real CineStation / camera firmware output.
 
 ## Installation
 

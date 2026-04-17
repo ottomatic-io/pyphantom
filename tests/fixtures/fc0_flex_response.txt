@@ -1,0 +1,137 @@
+fc0 : {		\
+	res : 4096 x 2304,	\
+	bin : 0,	\
+	rate : 938,	\
+	exp : 533049,	\
+	shoff : 0,	\
+	edrexp : 0,	\
+	ptframes : 10,	\
+	bcount : 0,	\
+	bperiod : 1065142,	\
+	hqenable : 0,	\
+	frcount : 9588,	\
+	ramp : "",	\
+	state : { STR },	\
+	start : 0x1840000,	\
+	len : 0x7E743000,	\
+	frsize : 11796480,	\
+	frspace : 2121543680,	\
+	firstfr : -2887,	\
+	lastfr : -1552,	\
+	format : 266,	\
+	decimation : 1,	\
+	in : -2887,	\
+	out : -1552,	\
+	aexpmode : 0,	\
+	aexpcomp : 0,	\
+	audiopktsize : 0,	\
+	trigtime : {		\
+		secs : 1776415322,	\
+		frac : 336880 	\
+	},	\
+	cam : {		\
+		syncimg : 0,	\
+		master : 0,	\
+		tcmode : 1,	\
+		trigpol : 0,	\
+		trigfilt : 32,	\
+		frdelay : 0,	\
+		startonacq : 1,	\
+		aux1mode : 0,	\
+		aux2mode : 0,	\
+		aux3mode : 0,	\
+		memgateen : 0,	\
+		membpp : 12,	\
+		tsformat : 1,	\
+		mode : 0 	\
+	},	\
+	info : {		\
+		hwver : 4001,	\
+		sver : 906101034,	\
+		fver : 169,	\
+		pver : 16,	\
+		model : "Phantom Flex4K",	\
+		sensor : 4000,	\
+		snsversion : 105,	\
+		snsserial : 0,	\
+		kernel : 587,	\
+		swver : 167360320,	\
+		xver : 1013571,	\
+		serial : 16395,	\
+		cfa : 3,	\
+		filter : 0,	\
+		name : "16395",	\
+		mdepths : 0x1000,	\
+		genlockstatus : 0,	\
+		snstemp : 35,	\
+		camtemp : 54,	\
+		features : "bref blk4 shtr attach earlyimg notify log dualp aux2 wide mm24 v4k genlock audio prores shtr mag" 	\
+	},	\
+	adj : {		\
+		red : 1,	\
+		green : 1,	\
+		blue : 1,	\
+		wbtemp : 4950,	\
+		wbcc : 55,	\
+		wbred : 1.370309432,	\
+		wbblue : 1.866422519,	\
+		edgeg : 0,	\
+		edger : 0,	\
+		edgeth : 0,	\
+		gamma : 2.2,	\
+		rgamma : -2e-06,	\
+		bgamma : -2e-06,	\
+		toe : 1,	\
+		gain : 1,	\
+		offset : 0,	\
+		flare : 0,	\
+		hue : 0,	\
+		sat : 1,	\
+		rped : 0,	\
+		gped : 0,	\
+		bped : 0,	\
+		tone : "EI1250 0.024 0.100 0.056 0.200 0.134 0.400 0.224 0.600 0.271 0.700 0.600 0.960",	\
+		mmsat : "",	\
+		mmhue : "",	\
+		chroma : 1,	\
+		matrix : 1,	\
+		log : 0,	\
+		sdimin : 32,	\
+		sdimax : 960,	\
+		cmatrix : "cal 2.04935 -0.516239 0.0386356  -0.135381 0.757609 0.636798  -0.0564543 -0.552734 2.97495",	\
+		umatrix : "",	\
+		filter : "" 	\
+	},	\
+	meta : {		\
+		name : "",	\
+		uuid : "00000000-400b-4000-e9e1-f25a000523f0",	\
+		system : 21,	\
+		pbrate : 25,	\
+		tcrate : 25,	\
+		trigtc : "14:26:54.01",	\
+		pax : 1296,	\
+		pay : 2304,	\
+		paox : 0,	\
+		paoy : 0,	\
+		vox : 0,	\
+		voy : 0,	\
+		vw : 4096,	\
+		vh : 2304,	\
+		vow : 1911,	\
+		voh : 1075,	\
+		ox : 0,	\
+		oy : 0,	\
+		w : 0,	\
+		h : 0,	\
+		ow : 0,	\
+		oh : 0,	\
+		crop : 0,	\
+		resize : 0,	\
+		lens : "",	\
+		fstop : 0,	\
+		flen : 0,	\
+		gps : "",	\
+		comment : "",	\
+		xset : "" 	\
+	} 	\
+}

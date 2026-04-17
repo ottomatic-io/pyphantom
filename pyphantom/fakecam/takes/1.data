@@ -77,8 +77,8 @@ fc67 : {		\
 		edger : 0,	\
 		edgeth : 0,	\
 		gamma : 2.2,	\
-		rgamma : 0,	\
-		bgamma : 0,	\
+		rgamma : -2e-06,	\
+		bgamma : -2e-06,	\
 		toe : 1,	\
 		gain : 1,	\
 		offset : 0,	\
