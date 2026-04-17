@@ -11,6 +11,8 @@ from threading import Thread
 
 import yaml
 
+from pyphantom.flex import FlexLoader
+
 from .fakecam_data import state, answers
 
 logger = logging.getLogger(__name__)
@@ -200,7 +202,7 @@ def load_takes():
         if os.path.exists("{}/takes-ph7/{}.raw".format(script_path, take_index)):
             with open(yaml_file) as y:
                 clean = " ".join(y.read().split()).replace("\\", "")
-                take_info = yaml.safe_load(clean)
+                take_info = yaml.load(clean, Loader=FlexLoader)
                 # use first key of take_info because we renumber the takes
                 state["fc{}".format(take_index)] = take_info[list(take_info.keys())[0]]
             logger.info("Take {} loaded".format(take_index))
