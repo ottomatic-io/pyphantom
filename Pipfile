@@ -8,10 +8,10 @@ pyphantom = {editable = true, path = "."}
 
 [dev-packages]
 "pytest" = "*"
-"pcapy" = "*"
+"pcapy-ng" = "*"
 
 [requires]
-python_version = "3.7"
+python_version = "3.11"
 
 [scripts]
 test = "py.test -v"

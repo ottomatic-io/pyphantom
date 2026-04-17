@@ -23,8 +23,9 @@ def cam(request):
 
 # FIXME: Find a nicer way to test structures than calling `str()` on them
 def test_flag(cam):
-    assert cam.ask("get c1.state") == ["RDY"]
-    assert str(cam.structures.c1.state) == str(["RDY"])
+    # c1 is deepcopy(fc1) after load_takes; take YAML uses `state : { STR }` -> dict
+    assert cam.ask("get c1.state") == {"STR": ""}
+    assert str(cam.structures.c1.state) == str({"STR": ""})
 
 
 def test_simple(cam):
@@ -39,13 +40,42 @@ def test_simple_with_colon(cam):
 
 def test_dict(cam):
     assert cam.ask("get defc") == {
-        "exp": 1250000,
-        "meta": {"crop": 0, "oh": 0, "ow": 0, "resize": 0},
-        "rate": 400,
-        "res": "4096x2304",
+        "aexpcomp": 0,
+        "aexpmode": 0,
+        "bcount": 0,
+        "bperiod": 10416317,
+        "decimation": 1,
+        "edrexp": 0,
+        "exp": 3333332,
+        "frcount": 5000,
+        "frsize": 2949120,
+        "hqenable": 0,
+        "meta": {"crop": 1, "h": 1080, "oh": 0, "ow": 0, "ox": 0, "oy": 0, "w": 1920},
+        "ptframes": 1,
+        "ramp": "",
+        "rate": 150,
+        "res": "2048 x 1152",
+        "shoff": 0,
     }
     assert str(cam.structures.defc) == str(
-        {"rate": 400, "res": "4096x2304", "exp": 1250000, "meta": {"crop": 0, "resize": 0, "ow": 0, "oh": 0}}
+        {
+            "rate": 150,
+            "res": "2048 x 1152",
+            "exp": 3333332,
+            "edrexp": 0,
+            "ptframes": 1,
+            "shoff": 0,
+            "ramp": "",
+            "bcount": 0,
+            "bperiod": 10416317,
+            "hqenable": 0,
+            "decimation": 1,
+            "frcount": 5000,
+            "frsize": 2949120,
+            "aexpmode": 0,
+            "aexpcomp": 0,
+            "meta": {"ox": 0, "oy": 0, "w": 1920, "h": 1080, "ow": 0, "oh": 0, "crop": 1},
+        }
     )
 
 
